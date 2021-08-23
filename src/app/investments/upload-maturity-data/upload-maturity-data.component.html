@@ -1,0 +1,98 @@
+<div>
+    <h4 class="page_title text--capital">upload maturity data</h4>
+  
+    <nz-tabset>
+        <nz-tab nzTitle="Single Upload">
+          <ng-template nz-tab>
+            <div nz-row [nzGutter]="[10, 10]">
+                <div nz-col nzSpan="10" class="gutter-row">
+                  <div class="card border-0">
+                    <form nz-form nzLayout="vertical" [formGroup]="uploadMaturityForm" (ngSubmit)="submitForm()">
+                      <nz-form-item>
+                        <nz-form-label>Savings ID</nz-form-label>
+                        <nz-form-control nzErrorTip="Please enter Savings ID">
+                          <input nzSize='large' type="text" nz-input formControlName="savings_id" class="text--upper" />
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-label>Full Name</nz-form-label>
+                        <nz-form-control nzErrorTip="Please email valid full name">
+                          <input nzSize='large' type="text" nz-input formControlName="investor_name" />
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                          <div class="text--right">
+                            <button class="button button--wide button--secondary text--white text--capital">
+                              upload data
+                            </button>
+                          </div>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </form>
+                  </div>
+                </div>
+              </div>
+          </ng-template>
+        </nz-tab>
+        <nz-tab nzTitle="Bulk Upload">
+          <ng-template nz-tab>
+            <div class="import_wrapper">
+                <h4 class="import_text card_header mb2">Add Bulk Data</h4>
+                <div class="import_select" (click)="fileInput.click()" (change)="onInputChange($event)">
+                  <div class="text--center">
+                    <input
+                      accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                      type="file" #fileInput style="display: none;">
+                    <img src="assets/images/upload.svg" width="60" height="60" alt="" srcset="">
+                    <p class="import_text text--secondary text--medium text--capital mt2">Select File</p>
+                    <p class="import_text text--ash text--medium text--capital mt2">{{selectedFile?.name}}</p>
+                  </div>
+                </div>
+      
+                <div nz-row [nzGutter]="16" nzJustify="space-between" class="action-row mt4">
+                  <div nz-col class="gutter-row" nzSpan>
+                    <button (click)="uploadBulkForm()" [disabled]="!selectedFile || isUploading"
+                      class="button button--secondary text--capital">
+                      Upload Data
+                    </button>
+                  </div>
+                  <div nz-col class="gutter-row" nzSpan>
+                    <button (click)="reset()" class="button button--secondary text--capital">
+                      reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+      
+              <div class="mt5" *ngIf="allUploads && allUploads.length">
+                <div class="customtable_block">
+                  <table class="customtable">
+                    <thead>
+                      <tr>
+                        <th>S/No</th>
+                        <th>Investor Name</th>
+                        <th>Savings ID</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of allUploads; let index = index">
+                        <td>
+                          {{index + 1}}
+                        </td>
+                        <td>
+                          {{data.investor_name}}
+                        </td>
+                        <td>
+                            {{data.savings_id}}
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </ng-template>
+        </nz-tab>
+      </nz-tabset>
+  </div>
+  

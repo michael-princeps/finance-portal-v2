@@ -1,0 +1,35 @@
+@import '../../../styles/abstract/variables';
+
+
+.bg-red {
+  background-color: $color-danger;
+  color: $color-white !important;
+}
+
+.bg-green {
+  background-color: $color-green;
+  color: $color-white !important;
+}
+
+.bg-pry {
+  background-color: $color-primary;
+  color: $color-white !important;
+}
+
+
+.refund {
+  &_container {
+    background-color: $color-white;
+    border-radius: 10px;
+    overflow: auto;
+    // padding: 40px;
+  }
+
+  &_header {
+    padding: 15px 10px;
+  }
+
+  &_body {
+    padding: 15px 0;
+  }
+}

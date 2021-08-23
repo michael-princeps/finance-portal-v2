@@ -1,0 +1,34 @@
+<div>
+    <h4 class="page_title text--capital">send maturity email</h4>
+  
+    <div nz-row [nzGutter]="[10, 10]">
+      <div nz-col nzSpan="10" class="gutter-row">
+        <div class="card border-0">
+          <form nz-form nzLayout="vertical" [formGroup]="sendMaturityEmailForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-label>Borrower ID</nz-form-label>
+                <nz-form-control nzErrorTip="Please enter Borrower ID">
+                  <input nzSize='large' type="text" nz-input formControlName="borrower_id" class="text--upper" />
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label>Email Address</nz-form-label>
+                <nz-form-control nzErrorTip="Please email valid email address">
+                  <input nzSize='large' type="email" nz-input formControlName="email" />
+                </nz-form-control>
+              </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                <div class="text--right">
+                  <button class="button button--wide button--secondary text--white text--capital">
+                    send email
+                  </button>
+                </div>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

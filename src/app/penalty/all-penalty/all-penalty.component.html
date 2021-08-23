@@ -1,0 +1,103 @@
+<div>
+    <h4 class="page_title text--capital">{{pageTitle}}</h4>
+    <div class="penalty">
+        <div class="action-row mt-2">
+            <div nz-row [nzGutter]="16">
+              <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" class="gutter-row">
+                <!-- <input nz-input placeholder="large size"  /> -->
+                <div nz-row [nzGutter]="16">
+                  <div nz-col nzXs="12" nzLg="10" *ngIf="penaltyStatus == '0'">
+                    <nz-select [nzDisabled]="setOfCheckedId.size < 1 || isPerformingBulkAction"
+                      [(ngModel)]="bulkSelectedAction" (ngModelChange)="performAction()" nzSize="large"
+                      nzPlaceHolder="Bult Actions" [nzSuffixIcon]="suffixBulkSelect">
+                      <nz-option nzValue="approve" nzLabel="Approve"></nz-option>
+                      <nz-option nzValue="cancel" nzLabel="Cancel"></nz-option>
+                    </nz-select>
+                    <ng-template #suffixBulkSelect>
+                      <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
+                    </ng-template>
+                  </div>
+                  <div nz-col class="gutter-row" nzXs="12" nzLg="14">
+                    <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
+                      <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text" (ngModelChange)="changeSearch($event)" />
+                    </nz-input-group>
+                    <ng-template #suffixIconSearch>
+                      <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="penaltyData">
+            <div class="mt-5">
+              <table class="customtable">
+                <thead>
+                  <tr>
+                    <th *ngIf="penaltyStatus == 0">
+                      <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="onAllChecked($event)"
+                        [nzIndeterminate]="indeterminate">&nbsp;</label>
+                    </th>
+                    <th>
+                      &nbsp;
+                    </th>
+                    <!-- <th>Mode</th> -->
+                    <th>Date</th>
+                    <th>Loan ID</th>
+                    <th>Initiated By</th>
+                    <th *ngIf="penaltyStatus != 0">Approved By</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="penaltyData && penaltyData.length; else nopenaltys">
+                    <tr *ngFor="let loan of penaltyData; let index = index">
+                      <td *ngIf="penaltyStatus == 0">
+                        <label nz-checkbox [ngModel]="setOfCheckedId.has(loan.id)"
+                          (ngModelChange)="onItemChecked(loan.id, $event)">&nbsp;</label>
+                      </td>
+                      <!-- <td>
+                        <nz-tag [nzColor]="'#002E5B'">{{loan.ussd_penaltyStatus == 0 ? 'Web' : 'USSD'}}</nz-tag>
+                      </td> -->
+                      <td>
+                          {{index + 1}}
+                      </td>
+                      <td>{{loan.created_at | date:'dd/MM/yyyy h:mm a'}}</td>
+                      <td>{{loan.loanid}}</td>
+                      <td>{{loan.initiator.firstname | titlecase}}
+                        {{loan.initiator.lastname | titlecase}}</td>
+                      <td *ngIf="penaltyStatus != 0">{{loan.approver.firstname | titlecase}}
+                        {{loan.approver.lastname | titlecase}}</td>
+                    </tr>
+                  </ng-container>
+                  <ng-template #nopenaltys>
+                    <tr>
+                      <td [attr.colspan]="penaltyStatus == 0 ? '6' : '5' " class="text--center">
+                        No penalty yet
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+            <div class="customtable_footer">
+              <p class="paginate_text text--ash">
+                Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+                  [nzMax]="penaltys?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.penaltys?.total}} results
+              </p>
+              <div class="paginate">
+                <span class="paginate_text">
+                  {{this.penaltys?.from}} - {{this.penaltys?.to}}
+                </span>
+                <div class="button-group">
+                  <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+                    <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+                  </button>
+                  <button (click)="goNext()" class="button button_paginate_next text--capital">
+                    <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+    </div>
+</div>

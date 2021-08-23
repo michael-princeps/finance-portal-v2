@@ -1,0 +1,110 @@
+<div>
+    <h4 class="page_title text--capital">refund report</h4>
+    <div>
+      <div nz-row [nzGutter]="16" class="my-5">
+        <div nz-col class="gutter-row" nzSpan="18">
+          <div class="card card_colored border-0">
+  
+            <div nz-row [nzGutter]="[10, 10]" nzAlign="bottom">
+              <div nz-col class="gutter-row">
+                <label class="card_header text--deep-black mb2 text--capital">from</label>
+                <input nzSize="large" [(ngModel)]="fromDate" type="date" nz-input>
+              </div>
+              <div nz-col class="gutter-row">
+                <label class="card_header text--deep-black mb2 text--capital">to</label>
+                <input nzSize="large" [(ngModel)]="toDate" type="date" nz-input>
+              </div>
+              <div nz-col nzSpan="6" class="gutter-row">
+                <label class="card_header text--deep-black mb2 text--capital">satus</label>
+                <nz-select [(ngModel)]="status" nzSize="large"
+                nzPlaceHolder="Select Status" [nzSuffixIcon]="suffixBulkSelect">
+                <nz-option nzValue="0" nzLabel="Awaiting Initial Approval"></nz-option>
+                <nz-option nzValue="1" nzLabel="Awaiting Initial Approval"></nz-option>
+                <nz-option nzValue="2" nzLabel="Completed"></nz-option>
+                <nz-option nzValue="3" nzLabel="Rejected"></nz-option>
+                <nz-option nzValue="4" nzLabel="Canceled"></nz-option>
+              </nz-select>
+              <ng-template #suffixBulkSelect>
+                <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
+              </ng-template>
+              </div>
+              <div nz-col class="gutter-row">
+                <button (click)="fetchReports()" class="button button--secondary text--capital">
+                  Fetch Results
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <ng-container *ngIf="refundReport">
+          <div class="customtable_block">
+            <table class="customtable">
+              <thead>
+                <tr>
+                  <th>
+                    &nbsp;
+                  </th>
+                  <th class="no-wrap text--capital">loan ID</th>
+                    <th class="no-wrap text--capital">account number</th>
+                    <th class="no-wrap text--capital">account name</th>
+                    <th class="no-wrap text--capital">amount</th>
+                    <th class="no-wrap text--capital">date created</th>
+                    <th class="no-wrap text--capital">initial amount</th>
+                    <th class="no-wrap text--capital">final amount</th>
+                    <th class="no-wrap text--capital">system due amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="refundReportData.length; else noData">
+                  <tr *ngFor="let data of refundReportData; let index = index">
+  
+                    <td>{{index + 1}}</td>
+                    <td>{{data.loan_id |uppercase}}</td>
+                    <td>{{data.accountnumber ? data.accountnumber : 'N/A'}}</td>
+                    <td>{{data.accountname ? data.accountname : 'N/A'}}</td>
+                    <td>{{data.amount | currency:'₦'}}</td>
+                    <td>{{data.datecreated | date}}</td>
+                    <td>{{(data.initialamount ? data.initialamount : 0) | currency:'₦'}}</td>
+                    <td>{{(data.finalamount ?data.finalamount : 0) | currency:'₦'}}</td>
+                    <td>{{(data.system_due_amount ? data.system_due_amount : 0) | currency:'₦'}}</td>
+                  </tr>
+                </ng-container>
+                <ng-template #noData>
+                  <tr>
+                    <td colspan="9">
+                      <div class="p-5 text--center">
+                        No Data
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </tbody>
+            </table>
+          </div>
+          <div class="customtable_footer">
+            <p class="paginate_text text--ash">
+              Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+                [nzMax]="refundReport?.total" [nzStep]="1"></nz-input-number>&nbsp;out of
+              {{refundReport?.total}} results
+            </p>
+            <div class="paginate">
+              <span class="paginate_text">
+                {{refundReport?.from}} - {{refundReport?.to}}
+              </span>
+              <div class="button-group">
+                <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+                  <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+                </button>
+                <button (click)="goNext()" class="button button_paginate_next text--capital">
+                  <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  

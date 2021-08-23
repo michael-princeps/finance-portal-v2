@@ -1,0 +1,84 @@
+<div>
+    <h4 class="page_title text--capital">view repayment</h4>
+    <div>
+        <nz-tabset>
+            <nz-tab [nzTitle]="titleTemplate">
+                <ng-template #titleTemplate>
+                <span class="text--capital">credit wallet</span>
+                {{creditWallet.length}}
+                </ng-template>
+              <ng-template nz-tab>
+                <div class="row my-2">
+                    <div class="col-3">
+                      <div class="card">
+                        <div class="card-body">
+                          <div>
+                            <span class="text--bold d-block">{{creditWallet.length}}</span>
+                            <hr>
+                            <span class="d-block">Total Count</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="card">
+                        <div class="card-body">
+                          <div>
+                            <span
+                              class="text--bold d-block">{{(totalCreditWalletAmt? totalCreditWalletAmt: '0') | currency:'₦'}}</span>
+                            <hr>
+                            <span class="d-block">Total Amount</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="creditWallet.length">
+                    <div class="mb-2" *ngIf="creditWallet.length">
+                      <button class="button button--sm button--primary text--white mr-2">Upload
+                        Credit Wallet Repayment for Processing</button>
+                      <!-- <button class="btn bg-secondary text-white"
+                        (click)="export(creditwallet, 'Credit Wallet Repayment')">
+                        Export
+                      </button> -->
+                    </div>
+                  </ng-container>
+                  <div class="customtable_block">
+                    <table class="customtable">
+                      <thead>
+                        <tr>
+                          <th>
+                            &nbsp;
+                          </th>
+                          <!-- <th>Mode</th> -->
+                          <th>MANDATE REFERENCE</th>
+                          <th>LOAN ID</th>
+                          <th>AMOUNT</th>
+                          <th>PAYMENT DATE</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngIf="creditWallet.length; else noCreditWallet">
+                            <tr *ngFor="let loan of creditWallet; let i = index ">
+                                <td style="padding:20px">{{i + 1}}</td>
+                                <td>{{loan.mandatereference}}</td>
+                                <td>{{loan.loanid}}</td>
+                                <td>{{loan.amount | currency:'₦'}}</td>
+                                <td>{{loan.paymentdate}}</td>
+                              </tr>
+                        </ng-container>
+                        <ng-template #noCreditWallet>
+                          <tr>
+                            <td colspan="5" class="text--center">
+                              No repayments yet
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </tbody>
+                    </table>
+                  </div>
+              </ng-template>
+            </nz-tab>
+          </nz-tabset>
+    </div>
+</div>

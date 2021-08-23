@@ -1,0 +1,135 @@
+@import '../abstract/variables';
+
+.customtable {
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+
+  * {
+    position: relative;
+  }
+
+  thead {
+    tr {
+      height: 60px;
+      background: $color-secondary-light;
+
+      th {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 14px;
+        padding-left: 10px;
+        color: $color-deep-black;
+        text-transform: capitalize;
+
+        &:first-of-type {
+          padding-left: 20px;
+        }
+
+        &:last-of-type {
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+
+  tbody {
+
+    &.haserror{
+      tr{
+        background-color: rgba($color-danger, .65) !important;
+        color: $color-white;
+      }
+    }
+    tr {
+      height: 60px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 14px;
+      color: $color-black;
+      
+      &:nth-child(odd) {
+        background-color: $app-background;
+      }
+
+      th{
+        padding-left: 10px;
+      }
+      td {
+        padding-left: 10px;
+
+        &:first-of-type {
+          padding-left: 20px;
+        }
+
+        &:last-of-type {
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+
+  &_footer {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .paginate {
+      display: flex;
+      align-items: center;
+
+      &_text {
+        display: inline;
+        margin-right: 1rem;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 14px;
+        color: $color-deep-black;
+      }
+    }
+  }
+
+  &_block{
+    display: block;
+      width: 100%;
+      overflow: auto;
+  }
+
+  &--bordered{
+    border: 1px solid #dee2e6;
+
+    tr{
+      &:first-child{
+        th, td{
+          border: 1px solid #dee2e6;
+          border-top: 0 !important;
+        }
+      }
+      th, td{
+        border: 1px solid #dee2e6;
+        border-bottom: 0 !important;
+      }
+      th{
+        &:first-child{
+          // background-color: red !important;
+          border-left: 0 !important;
+        }
+      }
+      td{
+        &:last-child{
+          // background-color: red !important;
+          border-right: 0 !important;
+        }
+      }
+    }
+  }
+}
+
+

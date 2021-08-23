@@ -1,0 +1,19 @@
+@import '../../../styles/abstract/variables';
+
+.liquidation {
+    &_container{
+        background-color: $color-white;
+        border-radius: 10px;
+        overflow: auto;
+        padding: 15px 40px;
+    }
+    &_card{
+        background: #FCFCFC;
+        border-radius: 10px;
+        padding: 1rem 2rem;
+
+        &_item{
+            padding: 12.5px 0;
+        }
+    }
+}

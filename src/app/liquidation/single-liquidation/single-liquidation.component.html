@@ -1,0 +1,405 @@
+<div class="liquidation_container">
+
+  <ng-container *ngIf="liquidation">
+    <div class="mb-2">
+      <div class="d-flex align-items-center justify-content-between mb-1">
+        <h4 class="page_title text--secondary m-0">View liquidation {{liquidation?.reference}}</h4>
+        <a target="_blank" rel="noopener noreferrer" [href]="liquidation.pdf_link"
+          class="button button--secondary text--capital">
+          <i nz-icon nzType="file-pdf" nzTheme="outline" class="mr-2"></i> View PDF
+        </a>
+      </div>
+      <span *ngIf="liquidation" class="page_subtitle text--ash text--capital">
+        Date Created : {{liquidation.datecreated  | date:'dd/MM/yyyy h:mm a' }}
+      </span>
+    </div>
+    <hr>
+    <div class="my-5" *ngIf="liquidation.status == '0'">
+      <button nz-popconfirm nzPopconfirmTitle="Are you sure you want to cancel this Liquidation?"
+        (nzOnConfirm)="cancelLiquidation()" nzPopconfirmPlacement="topLeft"
+        class="button button--danger-outline text--capital mr-2">
+        cancel
+      </button>
+      <button (click)="liquidateModal = true" class="button button--primary text--capital">
+        liquidate
+      </button>
+    </div>
+    <div class="my-5">
+      <div nz-row [nzGutter]="[10, 10]">
+        <div nz-col [nzSpan]="12" class="gutter-row">
+          <div class="liquidation_card">
+            <div class="liquidation_card_item" nz-row [nzGutter]="[5]">
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--regular text--capital m0 text--bold text--black">
+                  first name
+                </p>
+              </div>
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--right text--regular text--primary m0">
+                  {{liquidation.firstname |titlecase}}
+                </p>
+              </div>
+            </div>
+            <div class="liquidation_card_item" nz-row [nzGutter]="[5]">
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--regular text--capital m0 text--bold text--black">
+                  payment account name
+                </p>
+              </div>
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--right text--regular text--blue text--capital m0">
+                  {{liquidation.lastname |titlecase}}
+                </p>
+              </div>
+            </div>
+            <div class="liquidation_card_item" nz-row [nzGutter]="[5]">
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--regular text--capital m0 text--bold text--black">
+                  loan ID
+                </p>
+              </div>
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--right text--regular text--primary text--capital m0">
+                  {{liquidation.loan_id | uppercase}}
+                </p>
+              </div>
+            </div>
+            <div class="liquidation_card_item" nz-row [nzGutter]="[5]">
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--regular text--capital m0 text--bold text--black">
+                  liquidation amount
+                </p>
+              </div>
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--right text--regular text--primary text--capital m0">
+                  {{liquidation.liquidationamount | currency:'₦ '}}
+                </p>
+              </div>
+            </div>
+            <div class="liquidation_card_item" nz-row [nzGutter]="[5]">
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--regular text--capital m0 text--bold text--black">
+                  status
+                </p>
+              </div>
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--right text--regular text--primary text--capital m0">
+                  <span *ngIf="liquidation.status === '2'" class="badge badge-danger">Cancelled</span>
+                  <span *ngIf="liquidation.status === '1'" class="badge badge-success">Completed</span>
+                  <span *ngIf="liquidation.status === '0'" class="badge badge-secondary">Awaiting Payment</span>
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div nz-col [nzSpan]="12" class="gutter-row">
+          <div class="liquidation_card">
+            <div class="liquidation_card_item" nz-row [nzGutter]="[5]">
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--regular text--capital m0 text--bold text--black">
+                  payment account bank
+                </p>
+              </div>
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--right text--regular text--primary m0">
+                  {{liquidation.payment_bank_name ? liquidation.payment_bank_name : 'Union Bank of Nigeria Plc.'}}
+                </p>
+              </div>
+            </div>
+            <div class="liquidation_card_item" nz-row [nzGutter]="[5]">
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--regular text--capital m0 text--bold text--black">
+                  payment account name
+                </p>
+              </div>
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--right text--regular text--blue text--capital m0">
+                  Princeps Credit Systems Limited
+                </p>
+              </div>
+            </div>
+            <div class="liquidation_card_item" nz-row [nzGutter]="[5]">
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--regular text--capital m0 text--bold text--black">
+                  payment account number
+                </p>
+              </div>
+              <div nz-col [nzSpan]="12" class="gutter-row">
+                <p class="text--right text--regular text--primary text--capital m0">
+                  {{liquidation.payment_account_no ? liquidation.payment_account_no: '0102877545'}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5 class="text--primary text--regular-alt my-3">Payment Breakdown</h5>
+    <div class="customtable_block">
+      <div class="customtable--bordered" style="border-radius: 10px;">
+        <ng-container *ngIf="liquidation.penalty == 0; else showOther">
+          <table class="customtable">
+            <tbody>
+              <tr>
+                <th>
+                  <p>
+                    <strong>
+                      LOAN AMOUNT
+                    </strong></p>
+                  <br>
+                  <em class="text--ash">Loan disbursed as at {{liquidation.loanreleaseddate}}</em>
+                </th>
+
+                <td>
+                  {{liquidation.loanamount | currency:'₦ '}}
+                </td>
+              </tr>
+              <tr>
+
+                <th>
+                  <p><strong>
+                      LOAN BALANCE
+                    </strong></p><br />
+                  <em class="text--ash">(LOAN AMOUNT + TOTAL INTEREST DUE) - TOTAL PAID</em>
+                </th>
+
+                <td>
+                  {{getOverdueLoanBalance()  | currency:'₦ '}}
+                </td>
+              </tr>
+              <!-- <tr>
+
+                <th>
+                  <p><strong>ADMIN FEES</strong></p>
+                  <br />
+                  <em class="text--ash">Insurance + Disbursement Fees</em>
+                </th>
+
+                <td>
+                  {{liquidation.adminfees | currency:'₦ '}}
+                </td>
+              </tr> -->
+              <!-- <tr>
+
+                <th>
+                  <p><strong>
+                      TOTAL PAID
+                    </strong></p>
+                  <br />
+                  <em class="text--ash">Total Paid as at {{liquidation.datecreated | date}}</em>
+                </th>
+
+                <td>
+                  {{liquidation.paidamount | currency:'₦ '}}
+                </td>
+              </tr> -->
+              <tr>
+                <th>
+                  <p>
+                    <strong>
+                      INTEREST DUE ON DELAYED REPAYMENT
+                    </strong>
+                  </p><br />
+                  <em class="text--ash">Interest Due for {{liquidation.actualdaysused}} days as at
+                    {{liquidation.datecreated | date}}</em>
+                </th>
+
+                <td>
+                  {{liquidation.penalty_on_delay | currency:'₦ '}}
+                </td>
+              </tr>
+              <tr>
+
+                <th>
+                  <p>
+                    <strong>LOAN LIQUIDATION AMOUNT</strong>
+                  </p><br />
+                  <em class="text--ash">Loan Balance + Interest Due on Delayed Repayment</em>
+                </th>
+
+                <td>
+                  <b>{{liquidation.liquidationamount | currency:'₦ '}}</b>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-template #showOther>
+          <table class="customtable">
+            <tbody>
+              <tr>
+                <th>
+                  <p>
+                    <strong>
+                      LOAN AMOUNT
+                    </strong>
+                  </p>
+                  <br>
+                  <em class="text--ash">Loan disbursed as at {{liquidation.loanreleaseddate}}</em>
+                </th>
+
+                <td>
+                  {{liquidation.loanamount | currency:'₦ '}}
+                </td>
+              </tr>
+              <tr>
+
+                <th>
+                  <p><strong>TOTAL INTEREST DUE</strong></p><br />
+                  <em class="text--ash">Interest Due for {{liquidation.actualdaysused}} days as at
+                    {{liquidation.datecreated | date}}</em>
+                </th>
+
+                <td>
+                  {{liquidation.accruedinterest | currency:'₦ '}}
+                </td>
+              </tr>
+              <tr>
+
+                <th>
+                  <p><strong>
+                      ADMIN FEES
+                    </strong></p>
+                  <br />
+                  <em class="text--ash">Insurance + Disbursement Fees</em>
+                </th>
+
+                <td>
+                  {{liquidation.adminfees | currency:'₦ '}}
+                </td>
+              </tr>
+
+              <tr>
+
+                <th>
+                  <p>
+                    <strong>
+                      TOTAL PAID
+                    </strong>
+                  </p>
+                  <br />
+                  <em class="text--ash">Total Paid as at {{liquidation.datecreated | date}}</em>
+                </th>
+
+                <td>
+                  {{liquidation.paidamount | currency:'₦ '}}
+                </td>
+              </tr>
+
+              <tr>
+
+                <th>
+                  <p>
+                    <strong>
+                      LOAN BALANCE
+                    </strong>
+                  </p><br />
+                  <em class="text--ash">(LOAN AMOUNT + TOTAL INTEREST DUE + ADMIN FEES) - TOTAL PAID</em>
+                </th>
+
+                <td>
+                  {{getLoanBalance()  | currency:'₦ '}}
+                </td>
+              </tr>
+              <tr>
+
+                <th>
+                  <p><strong>LIQUIDATION CHARGES</strong></p><br />
+                  <em class="text--ash">2% of loan amount</em>
+                </th>
+
+                <td>
+                  {{liquidation.penalty | currency:'₦ '}}
+                </td>
+              </tr>
+              <tr>
+
+                <th>
+                  <p><strong>
+                      INTEREST ON DELAYED REPAYMENT
+                    </strong></p><br />
+                  <em class="text--ash">Interest on delayed repayment as at {{liquidation.datecreated | date}}</em>
+                </th>
+
+                <td>
+                  <b>{{liquidation.penalty_on_delay | currency:'₦ '}}</b>
+                </td>
+
+              </tr>
+              <tr>
+
+                <th>
+                  <p><strong>LIQUIDATION AMOUNT</strong></p>
+                  <br />
+                  <em class="text--ash">Loan Balance +Liquidation Charges +Interest Due on Delayed
+                    Repayment</em>
+                </th>
+
+                <td>
+                  <b>{{liquidation.liquidationamount | currency:'₦ '}}</b>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+
+<ng-container *ngIf="liquidation">
+  <nz-modal #pageModal [(nzVisible)]="liquidateModal" nzClassName="" [nzFooter]="null" nzKeyboard="false"
+    nzMaskClosable="false" (nzOnCancel)="handleCancelLiquidate()">
+    <div class="">
+      <form>
+        <h2 class="text--medium text--bold mb4 text--capital">
+          Liquidate Loan
+        </h2>
+        <div class="mb2">
+          <div nz-row [nzGutter]="[10, 20]">
+            <div nz-col nzSpan="24" class="gutter-row">
+              <label class="form_label text--regular text--capital text--deep-black">
+                Loan ID
+              </label>
+              <div class="mt1">
+                <input type="text" nzSize="large" readonly [(ngModel)]="liquidateObject.loanid" name="loanid"
+                  class="custom-input" nz-input>
+              </div>
+            </div>
+            <div nz-col nzSpan="24" class="gutter-row">
+              <label class="form_label text--regular text--capital text--deep-black">
+                Liquidation Amount
+              </label>
+              <div class="mt1">
+                <input type="text" nzSize="large" [(ngModel)]="liquidateObject.amount_paid" name="amount_paid"
+                  class="custom-input" nz-input>
+              </div>
+            </div>
+            <div nz-col nzSpan="24" class="gutter-row">
+              <label class="form_label text--regular text--capital text--deep-black">
+                Payment Date
+              </label>
+              <div class="mt1">
+                <input type="date" nzSize="large" [(ngModel)]="liquidationDate" name="liquidationDate"
+                  class="custom-input" nz-input>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="text--right">
+          <button (click)="handleCancelLiquidate()" class="button text--capital button--secondary-outline">
+            close
+          </button>
+          &nbsp;
+          <button (click)="liquidateLoan()" class="button text--capital button--secondary ">
+            liquidate loan
+          </button>
+        </div>
+      </form>
+    </div>
+  </nz-modal>
+</ng-container>

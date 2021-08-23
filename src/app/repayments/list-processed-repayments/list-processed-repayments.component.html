@@ -1,0 +1,107 @@
+<div>
+    <h4 class="page_title text--capital">processed repayments</h4>
+    <div class="penalty">
+        <div class="action-row mt-2">
+            <div nz-row [nzGutter]="16">
+              <div nz-col nzXs="24" nzSm="24" nzMd="14" class="gutter-row">
+                <!-- <input nz-input placeholder="large size"  /> -->
+                <div nz-row [nzGutter]="16" nzAlign="bottom">
+                    <div nz-col nzXs="12" nzLg="6" >
+                        <nz-select [(ngModel)]="type" nzSize="large"
+                          nzPlaceHolder="Repayemnt Type" [nzSuffixIcon]="suffixBulkSelect">
+                          <nz-option nzValue="1" nzLabel="RSP"></nz-option>
+                          <nz-option nzValue="0" nzLabel="IPPIS"></nz-option>
+                        </nz-select>
+                      </div>
+                      <div nz-col nzXs="12" nzLg="6" >
+                        <nz-select [(ngModel)]="status" nzSize="large"
+                          nzPlaceHolder="Status" [nzSuffixIcon]="suffixBulkSelect">
+                          <nz-option nzValue="failed" nzLabel="Failed"></nz-option>
+                            <nz-option  nzValue="completed" nzLabel="Completed"></nz-option>
+                        </nz-select>
+                        <ng-template #suffixBulkSelect>
+                          <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
+                        </ng-template>
+                      </div>
+                  <div nz-col class="gutter-row" nzXs="12" nzLg="6">
+                    <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
+                      <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text"/>
+                    </nz-input-group>
+                    <ng-template #suffixIconSearch>
+                      <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
+                    </ng-template>
+                  </div>
+                  <div nz-col class="gutter-row">
+                    <button class="button button--secondary text--capital" (click)="listRepayments()">
+                        Fetch Results
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="repaymentsData">
+            <div class="mt-5">
+              <table class="customtable">
+                <thead>
+                  <tr>
+                    <th>
+                      &nbsp;
+                    </th>
+                    <!-- <th>Mode</th> -->
+                    <th>Date</th>
+                    <th>Loan ID</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>IPPIS Number</th>
+                    <th>Mandate Reference</th>
+                    <th>Transaction Reference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="repaymentsData && repaymentsData.length; else norepayments">
+                    <tr *ngFor="let loan of repaymentsData; let index = index">
+                      <td>
+                          {{index + 1}}
+                      </td>
+                      <td>{{loan.date_created | date:'dd/MM/yyyy h:mm a'}}</td>
+                      <td>{{loan.loanid}}</td>
+                      <td>{{loan.amount | currency: '₦'}}</td>
+                      <td>{{loan.type}}</td>
+                      <td>{{loan.type === 'RSP' ? 'Not Applicable' : loan.ippisnumber}}</td>
+                      <td>{{loan.mandatereference}}</td>
+                      <td>{{loan.transactionreference}}</td>
+                    </tr>
+                  </ng-container>
+                  <ng-template #norepayments>
+                    <tr>
+                      <td colspan="7" class="text--center">
+                        No repayments yet
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+            <div class="customtable_footer">
+              <p class="paginate_text text--ash">
+                Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+                  [nzMax]="repayments?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.repayments?.total}} results
+              </p>
+              <div class="paginate">
+                <span class="paginate_text">
+                  {{this.repayments?.from}} - {{this.repayments?.to}}
+                </span>
+                <div class="button-group">
+                  <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+                    <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+                  </button>
+                  <button (click)="goNext()" class="button button_paginate_next text--capital">
+                    <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+    </div>
+</div>

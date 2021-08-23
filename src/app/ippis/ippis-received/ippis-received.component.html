@@ -1,0 +1,248 @@
+<div>
+  <h4 class="page_title text--capital">Payment Received</h4>
+
+  <div class="ippis">
+    <nz-tabset (nzSelectChange)="changeIndex($event)">
+      <nz-tab nzTitle="Upload Payment">
+        <ng-template nz-tab>
+          <div class="mb-5">
+            <div class="mb-4">
+              <button class="button button--secondary text--capital" (click)="importModal = true">upload payment</button>
+            </div>
+            <div nz-row [nzGutter]="[20]">
+              <div nz-col nzSpan="6" class="gutter-row">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="text--primary text--large">{{ totalcount ? totalcount: 0 }}</h4>
+                    <div class="border-top pt-3">
+                      <p class="text-muted text--regular-alt text--capital"> Total Application</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div nz-col nzSpan="6" class="gutter-row">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="text--primary text--large">{{ totalcount ? totalcount: 0 }}</h4>
+                    <div class="border-top pt-3">
+                      <p class="text-muted text--regular-alt text--capital"> Total Amount</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-container *ngIf="paymentsToUpload && paymentsToUpload.length">
+            <button class="button button--secondary text--capital">send for processing</button>
+            <table class="customtable mt-2">
+              <thead>
+                <tr>
+                  <th>
+                    &nbsp;
+                  </th>
+                  <th>Month</th>
+                  <th>Year</th>
+                  <th>IPPIS Number</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="paymentsToUpload && paymentsToUpload.length; else noPaymentsUploaded">
+                  <tr *ngFor="let payment of paymentsToUpload; let i = index ">
+                    <td>{{i + 1}}</td>
+                    <td>{{getMonth()}}</td>
+                    <td>{{defaultYear}}</td>
+                    <td>{{payment.ippis_number}}</td>
+                    <td>{{payment.amount_paid | currency:'₦'}}</td>
+                  </tr>
+                </ng-container>
+                <ng-template #noPaymentsUploaded>
+                  <tr>
+                    <td colspan="5">
+                      <div class="text--center p-5">
+                        No payments uploaded yet
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </tbody>
+            </table>
+          </ng-container>
+        </ng-template>
+      </nz-tab>
+      <nz-tab nzTitle="View Payment">
+        <ng-template nz-tab>
+          <div>
+            <div nz-row [nzGutter]="16" class="">
+              <div nz-col class="gutter-row" nzSpan="14">
+                <div class="card card_colored border-0">
+                  <div nz-row [nzGutter]="[10, 10]" nzAlign="bottom">
+                    <div nz-col nzSpan="9" class="gutter-row">
+                      <label class="text--regular-alt text--deep-black mb-1 text--capital" for="searchdate">Date</label>
+                      <input nzSize="large" [(ngModel)]="searchdate" id="searchdate" type="date" nz-input>
+                    </div>
+                    <div nz-col nzSpan="9" class="gutter-row">
+                      <label class="text--regular-alt text--deep-black mb-1 text--capital" for="seacrhtext">Search
+                        Text</label>
+                      <input nzSize="large" [(ngModel)]="searchtext" id="seacrhtext" type="text" placeholder="Search..."
+                        nz-input>
+                    </div>
+                    <div nz-col class="gutter-row">
+                      <button (click)="searchPayments()" class="button button--secondary text--capital">
+                        Fetch Results
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="customtable_block mt-5">
+              <table class="customtable">
+                <thead>
+                  <tr>
+                    <th>
+                      &nbsp;
+                    </th>
+                    <th>Options</th>
+                    <th>Date Created</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Payment Ref</th>
+                    <th>Referral Code</th>
+                    <th>Duration</th>
+                    <th>Interest Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="allPaymentsData && allPaymentsData.length ; else noPaymentReports">
+                    <tr *ngFor="let payment of allPaymentsData; let i = index ">
+                      <td>{{i + 1}}</td>
+                      <td>
+                        <button class="button button--secondary-outline"
+                          routerLink="/investmentone/{{payment.id}}">View</button>
+                      </td>
+                      <td>{{payment.startdate   | date }}</td>
+                      <td>{{payment.firstname  | titlecase }} {{payment.lastname   | titlecase}}</td>
+                      <td>{{payment.amount | currency:'₦'}}</td>
+                      <td>{{payment.paymentref}}</td>
+                      <td>{{(payment.code? payment.code : 'None')  | uppercase}}</td>
+                      <td>{{payment.duration}} Months</td>
+                      <td>{{payment.interestrate}}%</td>
+                    </tr>
+                  </ng-container>
+                  <ng-template #noPaymentReports>
+                    <tr>
+                      <td colspan="9">
+                        <div class="text--center p-5">
+                          No payment reports
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+            <div class="customtable_footer">
+              <p class="paginate_text text--ash">
+                Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+                  [nzMax]="allPayments?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.allPayments?.total}}
+                results
+              </p>
+              <div class="paginate">
+                <span class="paginate_text">
+                  {{this.allPayments?.from}} - {{this.allPayments?.to}}
+                </span>
+                <div class="button-group">
+                  <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+                    <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+                  </button>
+                  <button (click)="goNext()" class="button button_paginate_next text--capital">
+                    <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+
+
+
+  </div>
+</div>
+
+<ng-template #noVerification>
+  <tr>
+    <td colspan="4">
+      <div class="p-5 text--center">
+        No data
+      </div>
+    </td>
+  </tr>
+</ng-template>
+
+
+  <nz-modal #pageModal [(nzVisible)]="importModal" nzClassName="small_modal" [nzFooter]="null" nzKeyboard="false"
+  nzMaskClosable="false" (nzOnCancel)="handleCancelImport()">
+  <div class="">
+    <form>
+      <h2 class="text--medium text--bold mb4 text--capital">
+        Upload Payment
+      </h2>
+      <div class="mb2">
+        <div nz-row [nzGutter]="[10, 20]">
+          <div nz-col nzSpan="12" class="gutter-row">
+            <label class="form_label text--regular text--capital text--deep-black">
+                Month
+              </label>
+            <div class="mt1">
+              <nz-select nzShowSearch nzSize="large" [(ngModel)]="selectedMonth" name="selectedMonth"
+                class="custom-dropdown" nzPlaceHolder="Choose a month" [nzSuffixIcon]="suffixIconSearchh">
+                <nz-option *ngFor="let month of months" [nzValue]="month.value" [nzLabel]="month.label">
+                </nz-option>
+              </nz-select>
+              <ng-template #suffixIconSearchh>
+                <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
+              </ng-template>
+            </div>
+          </div>
+          <div nz-col nzSpan="12" class="gutter-row">
+            <label class="form_label text--regular text--capital text--deep-black">
+                Year
+              </label>
+            <div class="mt1">
+              <nz-select nzShowSearch nzSize="large" [(ngModel)]="defaultYear" name="defaultYear"
+                class="custom-dropdown" nzPlaceHolder="Choose a year" [nzSuffixIcon]="suffixIconSearchh">
+                <nz-option *ngFor="let year of availableYears" [nzValue]="year" [nzLabel]="year">
+                </nz-option>
+              </nz-select>
+              <ng-template #suffixIconSearchh>
+                <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column align-items-center mt-5">
+            <input type="file" name="" id="" class="d-none" (change)="onInputChange($event)" #file>
+            <div class="my-2">
+              <p class="text--secondary text--regular-alt">{{filename ? filename : 'No file selected'}}</p>
+            </div>
+            <button type="button" class="button button--sm button--outline"  (click)="file.click()">
+                {{filename ? 'Select Another File' : 'Select File'}}
+            </button>
+           </div>
+      </div>
+      <div class="text--right">
+        <button (click)="handleCancelImport()" class="button text--capital button--secondary-outline">
+          close
+        </button>
+        &nbsp;
+        <button [disabled]="!filename" (click)="uploadPayment()" class="button text--capital button--secondary ">
+          upload payments
+        </button>
+      </div>
+    </form>
+  </div>
+</nz-modal>

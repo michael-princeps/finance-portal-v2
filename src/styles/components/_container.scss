@@ -1,0 +1,43 @@
+.container-fluid{
+    width: 100%;
+}
+
+.container{
+    width: 100%;
+    padding-right: 2rem;
+    padding-left: 2rem;
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
+
+    // @media (min-width: 576px){
+    //     width: 540px;
+    // }
+
+    @media (min-width: 768px){
+        width: 720px
+    }
+
+    @media (min-width: 992px){
+        width: 95%;
+    }
+
+    @media (min-width: 1200px){
+        width: 1140px;
+    }
+
+    // @media (min-width: 1440px){
+    //     width: 1360px;
+    // }
+
+    // @media (min-width: 1800px){
+    //     width: 1600px;
+    // }
+}
+
+.wrapper{
+    max-width: 1800px;
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;    
+}

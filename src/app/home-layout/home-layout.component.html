@@ -1,0 +1,11 @@
+<div class="layout">
+    <aside class="left">
+        <app-sidebar></app-sidebar>
+    </aside>
+    <main>
+        <app-header [user]="user"></app-header>
+        <div class="layout_content">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>

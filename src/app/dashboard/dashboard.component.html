@@ -1,0 +1,52 @@
+<section>
+  <h4 class="page_title text--capital">Penetration Analysis</h4>
+  <div class="dashboard">
+    <ng-container *ngIf="dashboard">
+      <div class="customtable_block">
+        <table class="customtable table-striped mt-2">
+          <thead>
+            <tr>
+              <th>S/No</th>
+              <th>Organization</th>
+              <th>Summary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of dashboard.data; let i = index ">
+              <td style="padding:20px">{{i + 1}}</td>
+              <td>{{item.organization}}</td>
+              <td>
+                <div class="progress"
+                  [attr.data-label]="(item.active ? item.active: 0) +'/'+(item.prospective ? item.prospective : 0)">
+                  <span class="value value--orange" [style.width]="((item.active/item.prospective) * 100)+'%'"></span>
+                  <span class="value value--blue" [style.width]="((item.active/item.prospective) * 100)+'%'"></span>
+                </div>
+                <div>
+                  <span class="d-inline-block text--primary"><strong>{{item.open_loans_count}}</strong></span>&nbsp;
+                  <span>Open Loans</span>
+                </div>
+                <div>
+                  <span
+                    class="d-inline-block text--secondary"><strong>{{item.closed_loans_count}}</strong></span>&nbsp;<span
+                    class="d-inline-block">Closed Loans</span>
+                </div>
+                <div>
+                  <span class="d-inline-block">Active Amount:</span>
+                  <span class="d-inline-block ml-1">
+                    <strong>{{item.active_amount | currency:'₦'}}</strong>
+                  </span>
+                </div>
+                <div>
+                  <span class="d-inline-block">Prospective Amount:</span>
+                  <span class="d-inline-block ml-1">
+                    <strong>{{item.amount_get | currency:'₦'}}</strong>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</section>

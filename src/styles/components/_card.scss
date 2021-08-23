@@ -1,0 +1,18 @@
+@import '../abstract/variables';
+
+.card {
+  padding: 3rem;
+  background-color: $color-white;
+  border-radius: 10px;
+
+  &_colored {
+    background-color: $color-secondary-light;
+  }
+
+  &_header{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 18px;
+}
+}

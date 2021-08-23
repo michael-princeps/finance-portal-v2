@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "finance-portal": {
@@ -25,10 +25,18 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/.htaccess",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
-              "src/styles.scss"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/theme.less",
+              "src/styles/main.scss"
             ],
             "scripts": []
           },
@@ -123,6 +131,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "finance-portal"
+    }
+  },
+  "defaultProject": "finance-portal",
+  "cli": {
+    "analytics": "62224b93-401c-477e-aee9-e6ccf67b19cb"
+  }
 }

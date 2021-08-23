@@ -1,0 +1,553 @@
+<ng-container *ngIf="refund">
+  <div class="refund">
+    <div class="refund_container">
+      <div class="refund_header"
+        [ngClass]="{'bg-pry': refundsData.verification_status === 1, 'bg-green' : refundsData.verification_status === 2, 'bg-red': refundsData.verification_status === 0}">
+        <h4 class="page_title mb-0" [ngClass]="{'text--white': refundsData.verification_status === 1 || 0 || 2}">Refund_{{refund.loan_id}}-{{refund.accountname}}</h4>
+      </div>
+      <p class="page_subtitle my-3">Date Created : {{refund.datecreated  | date:'dd/MM/yyyy h:mm a' }}</p>
+
+      <hr>
+
+      <!-- <ng-container *ngIf="refund.status == '2'">
+        <button class="button button--secondary-outline mb-3"
+          *ngIf="refund.verify_status == '0' || refund.verify_status == '2'" (click)="retryRefund()">
+          Retry Payment
+        </button>
+      </ng-container> -->
+
+      <ng-container class="" *ngIf="refund.status == 0 || refund.status == 1">
+        <button class="button button--danger mr-2" (click)="rejectModal = true">Reject</button>
+        <button class="button button--warning mr-2" (click)="cancelModal = true">Cancel</button>
+        <button (click)="approvalModal = true" class="button button--primary">Authorize for {{refund.status == 0 ? 'Initial' : 'Final'}}
+          Approval</button>
+      </ng-container>
+
+      <div class="refund_body">
+        <div class="customtable--bordered" style="border-radius: 10px;">
+          <table class="customtable">
+            <tbody>
+              <tr>
+                <td style="padding:15px">
+                  <b>STATUS</b>
+                </td>
+                <td style="padding:15px">
+                  <span class="badge badge-default" *ngIf="refund.status == 0">Awaiting Initial
+                    Approval</span>
+                  <span class="badge badge-default" *ngIf="refund.status == 1">Awaiting Final
+                    Approval</span>
+                  <span class="badge badge-success" *ngIf="refund.status == 2">Completed</span>
+                  <span class="badge badge-danger" *ngIf="refund.status == 3">Rejected</span>
+                  <span class="badge badge-warning" *ngIf="refund.status == 4">Cancelled</span>
+                </td>
+                <td style="padding:15px">
+                  <b>AMOUNT</b>
+                </td>
+                <td style="padding:15px">
+                  {{refund.amount | currency:'₦'}}
+                </td>
+                <td style="padding:15px"><b>BANK NAME</b></td>
+                <td style="padding:15px">
+                  <span>{{getBankName(refund.bankcode) |uppercase}}</span>
+                </td>
+                <td style="padding:15px"><b>ACCOUNT NUMBER</b></td>
+                <td style="padding:15px">{{refund.accountnumber}}</td>
+              </tr>
+              <tr>
+                <td style="padding:15px">
+                  <b>TELEPHONE</b>
+                </td>
+                <td style="padding:15px">
+                  {{refund.telephone}}
+                </td>
+                <td style="padding:15px">
+                  <b>INITIAL AMOUNT</b>
+                </td>
+                <td style="padding:15px">
+                  {{refund.initialamount | currency:'₦'}}
+                </td>
+                <td style="padding:15px">
+                  <b>FINAL AMOUNT</b>
+                </td>
+                <td style="padding:15px">
+                  {{refund.finalamount | currency:'₦'}}
+                </td>
+                <td style="padding:15px">
+                  <b>AMOUNT PAID</b>
+                </td>
+                <td style="padding:15px">
+                  {{refund.finalamount | currency:'₦'}}
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:15px">
+                  <b>PAYMENT REFERENCE</b>
+                </td>
+                <td colspan="3" style="padding:15px">{{refund.giroreference}}</td>
+                <td style="padding:15px">
+                  <b>SYSTEM DUE AMOUNT</b>
+                </td>
+                <td style="padding:15px">{{refund.system_due_amount | currency: '₦'}}</td>
+                <td style="padding:15px">
+                  <b>VERIFIED ACCOUNT NAME</b>
+                </td>
+                <td style="padding:15px">{{refund.accountname}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-5">
+            <nz-tabset>
+                <nz-tab nzTitle="Authorization">
+                    <ng-template nz-tab>
+                        <div class="customtable--bordered" style="border-radius: 10px;">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th style="padding:15px" scope="row">NAME</th>
+                                    <th style="padding:15px" scope="row">DATE CREATED</th>
+                                    <th style="padding:15px" scope="row">AUTHORIZATION LEVEL</th>
+                                    <th style="padding:15px" scope="row">COMMENT</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td style="padding:15px">
+                                      {{creator?.firstname | titlecase}} {{creator?.lastname | titlecase}}
+                                    </td>
+                                    <td style="padding:15px">{{refund.datecreated  | date:'dd/MM/yyyy h:mm a'}}</td>
+                                    <td style="padding:15px">
+                                      Creator
+                                    </td>
+                                    <td style="padding:15px">{{refund.comment}}</td>
+                                  </tr>
+                                  <tr *ngIf="initialapprover">
+                                    <td style="padding:15px">
+                                      {{initialapprover.firstname | titlecase}} {{initialapprover.lastname | titlecase}}
+                                    </td>
+                                    <td style="padding:15px">{{refund.initialdate  | date:'dd/MM/yyyy h:mm a'}}</td>
+                                    <td style="padding:15px">
+                                      Initial Approver
+                                    </td>
+                                    <td style="padding:15px">{{refund.initialcomment}}</td>
+                                  </tr>
+                                  <tr *ngIf="finalapprover">
+              
+                                    <td style="padding:15px">
+                                      {{finalapprover.firstname | titlecase}} {{finalapprover.lastname | titlecase}}
+                                    </td>
+                                    <td style="padding:15px">{{refund.finaldate  | date:'dd/MM/yyyy h:mm a'}}</td>
+                                    <td style="padding:15px">
+                                      Final Approver
+                                    </td>
+                                    <td style="padding:15px">{{refund.finalcomment}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                    </ng-template>
+                </nz-tab>
+                <ng-container *ngIf="loanApplicationDetails">
+                    <nz-tab nzTitle="Loan Application">
+                        <ng-template nz-tab>
+                            <div class="customtable--bordered" style="border-radius: 10px;">
+                                <table class="customtable">
+
+                                    <tbody>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">COUNTRY</th>
+                                        <td style="padding:15px">Nigeria</td>
+                                        <th style="padding:15px" scope="row">FIRST NAME</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.firstname | titlecase}}</td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">MIDDLE / LAST NAME</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.lastname | titlecase}}</td>
+                
+                                        <th style="padding:15px" scope="row">BUSINESS NAME</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.place_of_work | titlecase}}</td>
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">UNIQUE NUMBER</th>
+                                        <td style="padding:15px">
+                                          {{loanApplicationDetails.uniquenumber ? loanApplicationDetails.uniquenumber: 'N/A'}}</td>
+                                        <th style="padding:15px" scope="row">GENDER</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.gender | titlecase}}</td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">MOBILE NUMBER</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.contactphone}}</td>
+                                        <th style="padding:15px" scope="row">EMAIL ADDRESS</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.email}}
+                                        </td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">DATE OF BIRTH</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.dob}}</td>
+                                        <th style="padding:15px" scope="row">ADDRESS</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.house_address | titlecase}}
+                                        </td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">CITY </th>
+                                        <td style="padding:15px">{{loanApplicationDetails.city  | titlecase}}</td>
+                                        <th style="padding:15px" scope="row">STATE</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.state | titlecase}}
+                                        </td>
+                
+                                      </tr>
+                                      <!-- <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">IPPIS NUMBER</th>
+                                        <td colspan="4" style="padding:15px">{{loanApplicationDetails.ippisnumber}}</td>
+                
+                                      </tr> -->
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">BANK NAME</th>
+                                        <td style="padding:15px">
+                                          <div *ngFor="let bank of banks">
+                                            <span
+                                              *ngIf="loanApplicationDetails.preferred_bankname === bank.bankcode">{{bank.name}}</span>
+                                          </div>
+                
+                                        </td>
+                                        <th style="padding:15px" scope="row">ACCOUNT NUMBER</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.preferred_accountnumber}}</td>
+                                      </tr>
+                                      <!-- <tr style="padding:15px">
+                                      <th style="padding:15px" scope="row">ORGANIZATION CODE</th>
+                                      <td style="padding:15px">{{organizationcode}}
+                                      </td>
+                                      <th style="padding:15px" scope="row">RSP PHONE NUMBER</th>
+                                      <td style="padding:15px">{{loanApplicationDetails.telephone}}</td>
+                  
+                                    </tr> -->
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">VERIFIED NAME OF ACCOUNT</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.verified_bankname}}
+                                        </td>
+                                        <th style="padding:15px" scope="row">CONFIRMED ACCOUNT NUMBER</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.verified_account_number}}</td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" class="text-upper" scope="row">MONTHLY INTEREST</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.monthly_interest | currency: '₦'}}
+                                        </td>
+                                        <th style="padding:15px" class="text-upper" scope="row">LOAN AMOUNT</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.loan_amount | currency: '₦'}}</td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" class="text-upper" scope="row">DURATION</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.tenor}}
+                                        </td>
+                                        <th style="padding:15px" class="text-upper" scope="row">MONTHLY REPAYMENT</th>
+                                        <td style="padding:15px">{{loanApplicationDetails.monthly_repayment | currency: '₦'}}</td>
+                
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </ng-template>
+                    </nz-tab>
+                </ng-container>
+                <ng-container *ngIf="loanDiskDetails">
+                    <nz-tab nzTitle="Loan Details">
+                        <ng-template nz-tab>
+                            <div class="customtable--bordered" style="border-radius: 10px;">
+                                <table class="customtable">
+                                    <tbody>
+                                      <tr>
+                                        <th style="padding:15px" scope="row">LOAN ID</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.loan_application_id}}
+                                        </td>
+                                        <th style="padding:15px" scope="row">DISBURSED BY</th>
+                                        <td style="padding:15px">ONLINE TRANSFER</td>
+                                      </tr>
+                
+                
+                                      <tr>
+                                        <th style="padding:15px" scope="row">PRINCIPAL AMOUNT</th>
+                                        <td style="padding:15px">{{loanDiskDetails.loan_principal_amount | currency:'₦'}}</td>
+                                        <th style="padding:15px" scope="row">LOAN RELEASED DATE</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.loan_released_date}}
+                                        </td>
+                
+                                      </tr>
+                                      <tr>
+                                        <th style="padding:15px" scope="row">INTEREST PERIOD</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.loan_interest_period}}
+                                        </td>
+                                        <th style="padding:15px" scope="row">DURATION PERIOD</th>
+                                        <td style="padding:15px">{{loanDiskDetails.loan_duration_period}}</td>
+                                      </tr>
+                                      <tr>
+                                        <th style="padding:15px" scope="row">MONTHLY INTEREST</th>
+                                        <td style="padding:15px">{{loanDiskDetails.loan_interest | currency:'₦'}}</td>
+                                        <th style="padding:15px" scope="row">LOAN DURATION</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.loan_duration}}
+                                        </td>
+                
+                                      </tr>
+                                      <tr>
+                
+                                        <th style="padding:15px" scope="row">INTEREST START DATE</th>
+                                        <td style="padding:15px">{{loanDiskDetails.loan_interest_start_date}}</td>
+                                        <th style="padding:15px" scope="row">FIRST REPAYMENT DATE</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.loan_first_repayment_date}}
+                                        </td>
+                                      </tr>
+                
+                                      <tr>
+                                        <th style="padding:15px" scope="row">FIRST REPAYMENT AMOUNT</th>
+                                        <td style="padding:15px">{{loanDiskDetails.first_repayment_amount | currency:'₦'}}</td>
+                                        <th style="padding:15px" scope="row">LAST REPAYMENT AMOUNT</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.last_repayment_amount | currency:'₦'}}
+                                        </td>
+                
+                                      </tr>
+                
+                
+                                      <tr>
+                
+                                        <th style="padding:15px" scope="row">OVERRIDE MATURITY DATE</th>
+                                        <td style="padding:15px">{{loanDiskDetails.loan_override_maturity_date}}</td>
+                                        <th style="padding:15px" scope="row">OVERRIDE EACH REPAYMENT TO</th>
+                                        <td style="padding:15px">{{loanDiskDetails.override_each_repayment_amount}}</td>
+                                      </tr>
+                                      <tr>
+                                        <th style="padding:15px" scope="row">INTEREST PERIOD</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.loan_interest_period}}
+                                        </td>
+                                        <th style="padding:15px" scope="row">DURATION PERIOD</th>
+                                        <td style="padding:15px">{{loanDiskDetails.loan_duration_period}}</td>
+                                      </tr>
+                                      <tr>
+                                        <th style="padding:15px" scope="row">REPAYMENT CYCLE</th>
+                                        <td style="padding:15px">
+                                          Monthly
+                                        </td>
+                                        <th style="padding:15px" scope="row">HOW SHOULD LOAN BE CHARGED AS PER LOAN SCHEDULE</th>
+                                        <td style="padding:15px">{{loanDiskDetails.loan_interest_schedule}}</td>
+                
+                                      </tr>
+                                      <tr>
+                                        <th style="padding:15px" scope="row">ADMIN FEES </th>
+                                        <td style="padding:15px">
+                                          {{getAdminFees(loanDiskDetails.loan_fee_id_928) | currency:'₦'}}
+                                        </td>
+                                        <th style="padding:15px" scope="row">ADMIN FEES SCHEDULE</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.loan_fee_schedule_928}}
+                                        </td>
+                
+                                      </tr>
+                                      <tr>
+                                        <th style="padding:15px" scope="row">LOAN STATUS </th>
+                                        <td style="padding:15px">
+                                          Open
+                                        </td>
+                                        <th style="padding:15px" scope="row">IPPIS NUMBER</th>
+                                        <td style="padding:15px">
+                                          {{loanDiskDetails.custom_field_1288}}
+                                        </td>
+                
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </ng-template>
+                    </nz-tab>
+                </ng-container>
+                <ng-container *ngIf="ippisVerficationData">
+                    <nz-tab nzTitle="IPPIS Verification">
+                        <ng-template nz-tab>
+                            <div class="customtable--bordered" style="border-radius: 10px;">
+                                <table class="customtable">
+
+                                    <tbody>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">ORGANIZATION</th>
+                                        <td style="padding:15px">{{ippisVerficationData.organization | titlecase}}</td>
+                                        <th style="padding:15px" scope="row">IPPIS NUMBER</th>
+                                        <td style="padding:15px">{{ippisVerficationData.ippisnumber}}</td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">FULL NAME</th>
+                                        <td style="padding:15px">{{ippisVerficationData.fullname | titlecase}}</td>
+                
+                                        <th style="padding:15px" scope="row">GRADE LEVEL</th>
+                                        <td style="padding:15px">{{ippisVerficationData.gradelevel}}</td>
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">STEP</th>
+                                        <td style="padding:15px">{{ippisVerficationData.step}}</td>
+                                        <th style="padding:15px" scope="row">BANK TYPE</th>
+                                        <td style="padding:15px">{{ippisVerficationData.banktype | titlecase}}</td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">BANK NAME</th>
+                                        <td style="padding:15px">{{ippisVerficationData.bankname | titlecase}}</td>
+                                        <th style="padding:15px" scope="row">BANK BRANCH</th>
+                                        <td style="padding:15px">{{ippisVerficationData.bankbranch | titlecase}}
+                                        </td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">ACCOUNT NUMBER</th>
+                                        <td style="padding:15px">{{ippisVerficationData.accountnumber}}</td>
+                                        <th style="padding:15px" scope="row">ACCOUNT TYPE</th>
+                                        <td style="padding:15px">{{ippisVerficationData.accounttype | titlecase}}
+                                        </td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">SORT CODE </th>
+                                        <td style="padding:15px">{{ippisVerficationData.sortcode}}</td>
+                                        <th style="padding:15px" scope="row">GROSS PAY</th>
+                                        <td style="padding:15px">{{ippisVerficationData.grosspay | currency:'₦'}}
+                                        </td>
+                
+                                      </tr>
+                                      <tr style="padding:15px">
+                                        <th style="padding:15px" scope="row">GROSS DEDUCTION</th>
+                                        <td style="padding:15px">{{ippisVerficationData.grossdeduction | currency:'₦'}}</td>
+                                        <th style="padding:15px" scope="row">NET PAY</th>
+                                        <td style="padding:15px">{{ippisVerficationData.netpay |  currency:'₦'}}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </ng-template>
+                    </nz-tab>
+                </ng-container>
+            </nz-tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+<nz-modal #pageModal [(nzVisible)]="rejectModal" nzClassName="small_modal" [nzFooter]="null" nzKeyboard="false"
+  nzMaskClosable="false" (nzOnCancel)="handleCancelRejectRefund()">
+  <div class="">
+    <form>
+      <h2 class="text--medium text--bold mb4 text--capital">
+        Reject Refund
+      </h2>
+      <div class="mb2">
+        <div nz-row [nzGutter]="[10, 20]">
+          <div nz-col nzSpan="24" class="gutter-row">
+            <label class="form_label text--regular text--capital text--deep-black">
+              Reason
+            </label>
+            <div class="mt1">
+              <input type="text" nzSize="large" [(ngModel)]="reason" name="reason" class="custom-input" nz-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text--right">
+        <button (click)="handleCancelRejectRefund()" class="button text--capital button--secondary-outline">
+          close
+        </button>
+        &nbsp;
+        <button nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="rejectRefund()" class="button text--capital button--secondary ">
+          reject
+        </button>
+      </div>
+    </form>
+  </div>
+</nz-modal>
+
+<nz-modal #pageModal [(nzVisible)]="cancelModal" nzClassName="small_modal" [nzFooter]="null" nzKeyboard="false"
+  nzMaskClosable="false" (nzOnCancel)="handleCancelRefund()">
+  <div class="">
+    <form>
+      <h2 class="text--medium text--bold mb4 text--capital">
+        Cancel Refund
+      </h2>
+      <div class="mb2">
+        <div nz-row [nzGutter]="[10, 20]">
+          <div nz-col nzSpan="24" class="gutter-row">
+            <label class="form_label text--regular text--capital text--deep-black">
+              Reason
+            </label>
+            <div class="mt1">
+              <input type="text" nzSize="large" [(ngModel)]="reason" name="reason" class="custom-input" nz-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text--right">
+        <button (click)="handleCancelRefund()" class="button text--capital button--secondary-outline">
+          close
+        </button>
+        &nbsp;
+        <button nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="cancelRefund()" class="button text--capital button--secondary ">
+          proceed
+        </button>
+      </div>
+    </form>
+  </div>
+</nz-modal>
+
+<ng-container *ngIf="refund">
+    <nz-modal #pageModal [(nzVisible)]="approvalModal" nzClassName="small_modal" [nzFooter]="null" nzKeyboard="false"
+  nzMaskClosable="false" (nzOnCancel)="handleCancelApproval()">
+  <div class="">
+    <form>
+      <h2 class="text--medium text--bold mb4 text--capital">
+        Authorization for {{refund.status == '0' ? 'Initial' : 'Final'}} Approval
+      </h2>
+      <div class="mb2">
+        <div nz-row [nzGutter]="[10, 20]">
+          <div nz-col nzSpan="24" class="gutter-row">
+            <label class="form_label text--regular text--capital text--deep-black">
+              Amount Due
+            </label>
+            <div class="mt1">
+              <input type="number" nzSize="large" [(ngModel)]="amount" name="amount" class="custom-input" nz-input>
+            </div>
+          </div>
+          <div nz-col nzSpan="24" class="gutter-row">
+            <label class="form_label text--regular text--capital text--deep-black">
+              Reason
+            </label>
+            <div class="mt1">
+              <input type="text" nzSize="large" [(ngModel)]="reason" name="reason" class="custom-input" nz-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text--right">
+        <button (click)="handleCancelApproval()" class="button text--capital button--secondary-outline">
+          close
+        </button>
+        &nbsp;
+        <button nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="approveRefund(refund.status)" class="button text--capital button--secondary ">
+          proceed
+        </button>
+      </div>
+    </form>
+  </div>
+</nz-modal>
+</ng-container>

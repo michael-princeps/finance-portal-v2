@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api: 'https://testapi.creditwallet.ng/api/v2/',
+  picUrl: 'https://testapi.creditwallet.ng/public/documents/adminprofile/',
+  oldUrl: 'https://api.creditwallet.ng/Creditwallet/public/api/',
+  staffUrl: 'http://localhost:4400'
 };
 
 /*

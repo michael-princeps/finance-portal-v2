@@ -1,0 +1,29 @@
+:root {
+    --background-default: '#FEE9DF';
+    --color-primary: '#F56B2A';
+    --color-default: '#333333';
+    --background-active: '#333333';
+    --color-active: '#FFFFFF';
+    --svg-primary: '#333333';
+    --svg-secondary: '#FEE9DF'
+  }
+/*user defined styles*/
+@import "abstract/variables";
+
+@import "base/base";
+
+@import "base/typography";
+
+@import "components/button";
+@import "components/container";
+// @import "components/form";
+@import "components/scrollbar";
+@import "components/page";
+@import "components/table";
+@import "components/card";
+@import "components/input";
+@import "components/custom";
+@import "components/import";
+// @import "components/swal";
+
+

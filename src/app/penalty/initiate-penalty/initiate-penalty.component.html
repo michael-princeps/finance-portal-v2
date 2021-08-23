@@ -1,0 +1,87 @@
+<div>
+  <h4 class="page_title text--capital">add penalty management</h4>
+
+  <nz-tabset (nzSelectChange)="changeIndex($event)">
+    <nz-tab nzTitle="Single Upload">
+      <ng-template nz-tab>
+        <div nz-row [nzGutter]="[10, 10]">
+          <div nz-col nzSpan="10" class="gutter-row">
+            <div class="card border-0">
+              <form nz-form nzLayout="vertical" [formGroup]="singleUploadForm" (ngSubmit)="uploadSingleForm()">
+                <nz-form-item>
+                  <nz-form-label>Loan ID</nz-form-label>
+                  <nz-form-control nzErrorTip="Please enter Loan ID">
+                    <input nzSize='large' type="text" nz-input formControlName="loanid" class="text--upper" />
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-control>
+                    <div class="text--right">
+                      <button class="button button--wide button--secondary text--white text--capital">
+                        upload data
+                      </button>
+                    </div>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Bulk Upload">
+      <ng-template nz-tab>
+        <div class="import_wrapper">
+          <h4 class="import_text card_header mb2">Add Bulk Penalties</h4>
+          <div class="import_select" (click)="fileInput.click()" (change)="onInputChange($event)">
+            <div class="text--center">
+              <input
+                accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                type="file" #fileInput style="display: none;">
+              <img src="assets/images/upload.svg" width="60" height="60" alt="" srcset="">
+              <p class="import_text text--secondary text--medium text--capital mt2">Select File</p>
+              <p class="import_text text--ash text--medium text--capital mt2">{{selectedFile?.name}}</p>
+            </div>
+          </div>
+
+          <div nz-row [nzGutter]="16" nzJustify="space-between" class="action-row mt4">
+            <div nz-col class="gutter-row" nzSpan>
+              <button (click)="uploadBulkForm()" [disabled]="!selectedFile || isUploading"
+                class="button button--secondary text--capital">
+                Upload Data
+              </button>
+            </div>
+            <div nz-col class="gutter-row" nzSpan>
+              <button (click)="reset()" class="button button--secondary text--capital">
+                reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt5" *ngIf="allUploads && allUploads.length">
+          <div class="customtable_block">
+            <table class="customtable">
+              <thead>
+                <tr>
+                  <th>S/No</th>
+                  <th>Loan ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of allUploads; let index = index">
+                  <td>
+                    {{index + 1}}
+                  </td>
+                  <td>
+                    {{data.loanid}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+</div>

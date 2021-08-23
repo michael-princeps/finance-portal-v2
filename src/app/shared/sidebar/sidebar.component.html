@@ -1,0 +1,344 @@
+<div style="position: relative;">
+  <nav class="sidebar">
+    <header>
+      <p class="sidebar_header_text">CreditWallet</p>
+      <!-- <p class="text--ash text--capital text--center">Staff Portal</p> -->
+    </header>
+    <div class="sidebar_menu">
+      <a class="sidebar_menu_item" [routerLink]="['/dashboard']" routerLinkActive="activemenu" >
+                <img src="assets/images/penetration-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                penetration analysis
+            </a>
+      <!-- <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': ippisRecChild1Active.isActive || ippisRecChild2Active.isActive || ippisRecChild3Active.isActive || isActive('ippis')}" >
+                    <img src="assets/images/ippis-icon.svg" width="20" height="20" class="sidebar_menu_icon" alt="" srcset="">
+                    IPPIS Reconciliation
+                </a>
+                <div class="submenu">
+                    <header class="submenu_header">
+                        <span class="submenu_header_text">IPPIS Reconciliation</span>
+                        <a class="submenu_header_action" (click)="closeAllMenus()">
+                            <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+                        </a>
+                    </header>
+                    <div class="submenu_menu">
+                        <a class="submenu_menu_item" #ippisRecChild1Active="routerLinkActive" [routerLink]="['/ippis/payment-received']" routerLinkActive="activemenu" >
+                            payment received
+                        </a>
+                        <a class="submenu_menu_item" #ippisRecChild2Active="routerLinkActive" [routerLink]="['/ippis/expected-payment']" routerLinkActive="activemenu">
+                            expected payment
+                        </a>
+                        <a class="submenu_menu_item" #ippisRecChild3Active="routerLinkActive" [routerLink]="['/ippis/reconciliation-results']" routerLinkActive="activemenu">
+                            Reconciliation results
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': liquidationChild1Active.isActive || liquidationChild2Active.isActive || liquidationChild3Active.isActive || isActive('liquidation')}" >
+                    <img src="assets/images/liquidation-icon.svg" width="20" height="20" class="sidebar_menu_icon" alt="" srcset="">
+                    Liquidation
+                </a>
+                <div class="submenu">
+                    <header class="submenu_header">
+                        <span class="submenu_header_text">Liquidation</span>
+                        <a class="submenu_header_action" (click)="closeAllMenus()">
+                            <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+                        </a>
+                    </header>
+                    <div class="submenu_menu">
+                        <a class="submenu_menu_item" #liquidationChild1Active="routerLinkActive" [routerLink]="['/liquidation/create']" routerLinkActive="activemenu" >
+                            create liquidation
+                        </a>
+                        <a class="submenu_menu_item" #liquidationChild2Active="routerLinkActive" [routerLink]="['/liquidations/0']" routerLinkActive="activemenu">
+                            awaiting payment
+                        </a>
+                        <a class="submenu_menu_item" #liquidationChild3Active="routerLinkActive" [routerLink]="['/liquidations/1']" routerLinkActive="activemenu">
+                            completed liquidations
+                        </a>
+                        <a class="submenu_menu_item" #liquidationChild3Active="routerLinkActive" [routerLink]="['/liquidations/2']" routerLinkActive="activemenu">
+                            canceled liquidations
+                        </a>
+                        <a class="submenu_menu_item" #liquidationChild4Active="routerLinkActive" [routerLink]="['/liquidations/report']" routerLinkActive="activemenu">
+                            liquidation report
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': refundChild1Active.isActive || refundChild2Active.isActive || refundChild3Active.isActive || isActive('refund')}" >
+                    <img src="assets/images/refunds-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                    Refunds
+                </a>
+                <div class="submenu">
+                    <header class="submenu_header">
+                        <span class="submenu_header_text">Refunds</span>
+                        <a class="submenu_header_action" (click)="closeAllMenus()">
+                            <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+                        </a>
+                    </header>
+                    <div class="submenu_menu">
+                        <a class="submenu_menu_item" #refundChild1Active="routerLinkActive" [routerLink]="['/refund/create']" routerLinkActive="activemenu" >
+                            create refund
+                        </a>
+                        <a class="submenu_menu_item" #refundChild2Active="routerLinkActive" [routerLink]="['/refunds/0']" routerLinkActive="activemenu">
+                            awaiting initial approval
+                        </a>
+                        <a class="submenu_menu_item" #refundChild3Active="routerLinkActive" [routerLink]="['/refunds/1']" routerLinkActive="activemenu">
+                            awaiting final approval
+                        </a>
+                        <a class="submenu_menu_item" #refundChild3Active="routerLinkActive" [routerLink]="['/refunds/2']" routerLinkActive="activemenu">
+                            completed refunds
+                        </a>
+                        <a class="submenu_menu_item" #refundChild3Active="routerLinkActive" [routerLink]="['/refunds/3']" routerLinkActive="activemenu">
+                            rejected refunds
+                        </a>
+                        <a class="submenu_menu_item" #refundChild3Active="routerLinkActive" [routerLink]="['/refunds/4']" routerLinkActive="activemenu">
+                            canceled refunds
+                        </a>
+                        <a class="submenu_menu_item" #refundChild4Active="routerLinkActive" [routerLink]="['/refunds/report']" routerLinkActive="activemenu">
+                            refund report
+                        </a>
+                    </div>
+                </div>
+            </div>
+             <!-- <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': isActive('investment')}" >
+                    <img src="assets/images/repayment-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                    Investments
+                </a>
+                <div class="submenu">
+                    <header class="submenu_header">
+                        <span class="submenu_header_text">Investments</span>
+                        <a class="submenu_header_action" (click)="closeAllMenus()">
+                            <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+                        </a>
+                    </header>
+                    <div class="submenu_menu">
+                        <a class="submenu_menu_item has-collapse"
+                        [ngClass]="{'activemenu': investmentsChild5Active.isActive ||  investmentsChild6Active.isActive}">
+                       maturity management
+                        <span class="loan_collapse_arrow"><i nz-icon nzType="caret-down" nzTheme="outline"></i></span>
+                      </a>
+                      <div class="submenu_menu collapse">
+                        <a class="submenu_menu_item" #investmentsChild5Active="routerLinkActive"
+                          [routerLink]="['/investment/maturity/upload']" routerLinkActive="activemenu">
+                          upload data
+                        </a>
+                        <a class="submenu_menu_item" #investmentsChild6Active="routerLinkActive"
+                          [routerLink]="['/investment/maturity/email']" routerLinkActive="activemenu">
+                          send email
+                        </a>
+                      </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': repaymentsChild1Active.isActive || repaymentsChild2Active.isActive || repaymentsChild3Active.isActive || isActive('repayments')}" >
+                    <img src="assets/images/refunds-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                    Repayments
+                </a>
+                <div class="submenu">
+                    <header class="submenu_header">
+                        <span class="submenu_header_text">Repayments</span>
+                        <a class="submenu_header_action" (click)="closeAllMenus()">
+                            <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+                        </a>
+                    </header>
+                    <div class="submenu_menu">
+                        <a class="submenu_menu_item" #repaymentsChild1Active="routerLinkActive" [routerLink]="['/repayments/upload']" routerLinkActive="activemenu" >
+                            Upload repayment
+                        </a>
+                        <a class="submenu_menu_item" #repaymentsChild2Active="routerLinkActive" [routerLink]="['/repayments/queue']" routerLinkActive="activemenu" >
+                            repayments queue
+                        </a>
+                        <a class="submenu_menu_item" #repaymentsChild2Active="routerLinkActive" [routerLink]="['/repayments/processed']" routerLinkActive="activemenu" >
+                            processed repayments
+                        </a>
+                        <a class="submenu_menu_item" #repaymentsChild3Active="routerLinkActive" [routerLink]="['/repayments/report']" routerLinkActive="activemenu" >
+                            repayment report
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': penaltyChild1Active.isActive ||  penaltyChild2Active.isActive ||penaltyChild3Active.isActive ||penaltyChild4Active.isActive ||penaltyChild5Active.isActive ||isActive('penalty')}" >
+                    <img src="assets/images/refunds-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                    Penalty Management
+                </a>
+                <div class="submenu">
+                    <header class="submenu_header">
+                        <span class="submenu_header_text">Penalty Management</span>
+                        <a class="submenu_header_action" (click)="closeAllMenus()">
+                            <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+                        </a>
+                    </header>
+                    <div class="submenu_menu">
+                        <a class="submenu_menu_item" #penaltyChild1Active="routerLinkActive" [routerLink]="['/penalty/upload']" routerLinkActive="activemenu" >
+                            Upload penalty
+                        </a>
+                        <a class="submenu_menu_item" #penaltyChild2Active="routerLinkActive" [routerLink]="['/penalty/0']" routerLinkActive="activemenu" >
+                            New Applications
+                        </a>
+                        <a class="submenu_menu_item" #penaltyChild3Active="routerLinkActive" [routerLink]="['/penalty/1']" routerLinkActive="activemenu" >
+                            Processing Applications
+                        </a>
+                        <a class="submenu_menu_item" #penaltyChild4Active="routerLinkActive" [routerLink]="['/penalty/2']" routerLinkActive="activemenu" >
+                            Processed Applications
+                        </a>
+                        <a class="submenu_menu_item" #penaltyChild5Active="routerLinkActive" [routerLink]="['/penalty/3']" routerLinkActive="activemenu" >
+                            Cancelled Applications
+                        </a>
+                    </div>
+                </div>
+            </div>
+      <!-- <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': repaymentChild1Active.isActive || repaymentChild2Active.isActive || repaymentChild3Active.isActive || isActive('ippis')}" >
+                    <img src="assets/images/repayment-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                    Repayment
+                </a>
+                <div class="submenu">
+                    <header class="submenu_header">
+                        <span class="submenu_header_text">Repayment</span>
+                        <a class="submenu_header_action" (click)="closeAllMenus()">
+                            <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+                        </a>
+                    </header>
+                    <div class="submenu_menu">
+                        <a class="submenu_menu_item" #repaymentChild1Active="routerLinkActive" [routerLink]="['/loans/11']" routerLinkActive="activemenu" >
+                            add repayment
+                        </a>
+                        <a class="submenu_menu_item" #repaymentChild2Active="routerLinkActive" [routerLink]="['/loans/0']" routerLinkActive="activemenu">
+                            repayment queue
+                        </a>
+                        <a class="submenu_menu_item" #repaymentChild3Active="routerLinkActive" [routerLink]="['/loans/1']" routerLinkActive="activemenu">
+                            processed repayment
+                        </a>
+                        <a class="submenu_menu_item" #repaymentChild4Active="routerLinkActive" [routerLink]="['/loans/1']" routerLinkActive="activemenu">
+                            repayment report
+                        </a>
+                        <a class="submenu_menu_item" #repaymentChild5Active="routerLinkActive" [routerLink]="['/loans/1']" routerLinkActive="activemenu">
+                            transfer report
+                        </a>
+                        <a class="submenu_menu_item" #repaymentChild6Active="routerLinkActive" [routerLink]="['/loans/1']" routerLinkActive="activemenu">
+                            repayment management
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+      <!-- <a class="sidebar_menu_item" [routerLink]="['/dashboard']" routerLinkActive="activemenu" >
+                <img src="assets/images/payment-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                Payment
+            </a> -->
+      <!-- <a class="sidebar_menu_item" [routerLink]="['/dashboard']" routerLinkActive="activemenu" >
+                <img src="assets/images/investment-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                Investment 
+            </a> -->
+      <!-- <a class="sidebar_menu_item" [routerLink]="['/dashboard']" routerLinkActive="activemenu" >
+                <img src="assets/images/investment-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                Investment Liquidation 
+            </a> -->
+      <!-- <a class="sidebar_menu_item" [routerLink]="['/dashboard']" routerLinkActive="activemenu" >
+                <img src="assets/images/investment-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                Investment Payment
+            </a> -->
+      <!-- <a class="sidebar_menu_item" [routerLink]="['/dashboard']" routerLinkActive="activemenu" >
+                <img src="assets/images/liquidation-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                Liquidation
+            </a> -->
+      <!-- <a class="sidebar_menu_item" [routerLink]="['/dashboard']" routerLinkActive="activemenu" >
+                <img src="assets/images/refunds-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                Refunds
+            </a> -->
+
+      <!-- <div class="has-child">
+        <a class="sidebar_menu_item"
+          [ngClass]="{'activemenu': invPaymentChild1Active.isActive || invPaymentChild2Active.isActive || invPaymentChild3Active.isActive || invPaymentChild4Active.isActive || invPaymentChild5Active.isActive ||  isActive('')}">
+          <img src="assets/images/investment-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+          investment payment
+        </a>
+        <div class="submenu">
+          <header class="submenu_header">
+            <span class="submenu_header_text">investment payment</span>
+            <a class="submenu_header_action" (click)="closeAllMenus()">
+              <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+            </a>
+          </header>
+          <div class="submenu_menu">
+            <a class="submenu_menu_item" #invPaymentChild1Active="routerLinkActive" [routerLink]="['/loans/11']"
+              routerLinkActive="activemenu">
+              import payment
+            </a>
+            <a class="submenu_menu_item" #invPaymentChild2Active="routerLinkActive" [routerLink]="['/loans/0']"
+              routerLinkActive="activemenu">
+              awaiting processing
+            </a>
+            <a class="submenu_menu_item" #invPaymentChild3Active="routerLinkActive" [routerLink]="['/loans/1']"
+              routerLinkActive="activemenu">
+              processed
+            </a>
+            <a class="submenu_menu_item" #invPaymentChild4Active="routerLinkActive" [routerLink]="['/loans/1']"
+              routerLinkActive="activemenu">
+              failed
+            </a>
+            <a class="submenu_menu_item" #invPaymentChild5Active="routerLinkActive" [routerLink]="['/loans/1']"
+              routerLinkActive="activemenu">
+              report
+            </a>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': loansChild1Active.isActive || loansChild2Active.isActive || loansChild3Active.isActive || loansChild4Active.isActive || loansChild5Active.isActive || loansChild6Active.isActive || loansChild7Active.isActive || loansChild8Active.isActive || loansChild9Active.isActive || isActive('loans')}">
+                    <img src="assets/images/loans.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
+                    <img src="assets/images/loans-active.svg" width="24" height="24" class="sidebar_menu_icon sidebar_menu_icon--active" alt="" srcset="">
+                    loans
+                </a>
+                <div class="submenu">
+                    <header class="submenu_header">
+                        <span class="submenu_header_text">loans</span>
+                        <a class="submenu_header_action" (click)="closeAllMenus()">
+                            <img src="assets/images/chevron-left-active.svg" width="24" height="24" alt="">
+                        </a>
+                    </header>
+                    <div class="submenu_menu">
+                        <a class="submenu_menu_item" #loansChild1Active="routerLinkActive" [routerLink]="['/loans/11']" routerLinkActive="activemenu" >
+                            Incomplete Applications
+                        </a>
+                        <a class="submenu_menu_item" #loansChild2Active="routerLinkActive" [routerLink]="['/loans/0']" routerLinkActive="activemenu">
+                            New Applications
+                        </a>
+                        <a class="submenu_menu_item" #loansChild3Active="routerLinkActive" [routerLink]="['/loans/1']" routerLinkActive="activemenu">
+                            Rejected Loans
+                        </a>
+                        <a class="submenu_menu_item" #loansChild4Active="routerLinkActive" [routerLink]="['/loans/8']" routerLinkActive="activemenu">
+                            Cancelled Loans
+                        </a>
+                        <a class="submenu_menu_item" #loansChild5Active="routerLinkActive" [routerLink]="['/loans/2']" routerLinkActive="activemenu">
+                            Processing
+                        </a>
+                        <a class="submenu_menu_item" #loansChild6Active="routerLinkActive" [routerLink]="['/loans/3']" routerLinkActive="activemenu">
+                            Awaiting Disbursement
+                        </a>
+                        <a class="submenu_menu_item" #loansChild6Active="routerLinkActive" [routerLink]="['/loans/12']" routerLinkActive="activemenu">
+                            Ready for Deductions Setup
+                        </a>
+                        <a class="submenu_menu_item" #loansChild7Active="routerLinkActive" [routerLink]="['/loans/10']" routerLinkActive="activemenu">
+                            Ready for Deductions
+                        </a>
+                        <a class="submenu_menu_item" #loansChild8Active="routerLinkActive" [routerLink]="['/loans/7']" routerLinkActive="activemenu">
+                            Ready for Disbursements
+                        </a>
+                        <a class="submenu_menu_item" #loansChild9Active="routerLinkActive" [routerLink]="['/loans/4']" routerLinkActive="activemenu">
+                            Completed Loan Transactions
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+
+    </div>
+  </nav>
+
+</div>

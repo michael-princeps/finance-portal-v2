@@ -1,0 +1,39 @@
+<div>
+  <h4 class="page_title text--capital">liquidation request</h4>
+
+  <div nz-row [nzGutter]="[10, 10]">
+    <div nz-col nzSpan="10" class="gutter-row">
+      <div class="card border-0">
+        <form nz-form nzLayout="vertical" [formGroup]="createLiquidationForm" (ngSubmit)="createLiquidationRequest()">
+          <nz-form-item>
+            <nz-form-label>Loan ID</nz-form-label>
+            <nz-form-control nzErrorTip="Please enter Loan ID">
+              <input nzSize='large' type="text" nz-input formControlName="loanid" class="text--upper" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>Email Address</nz-form-label>
+            <nz-form-control nzErrorTip="Please email valid email address">
+              <input nzSize='large' type="email" nz-input formControlName="email" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>Liquidation Date</nz-form-label>
+            <nz-form-control nzErrorTip="Please select liquidation date">
+              <input nzSize='large' type="date" nz-input formControlName="date" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <div class="text--right">
+                <button class="button button--wide button--secondary text--white text--capital">
+                  process request
+                </button>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

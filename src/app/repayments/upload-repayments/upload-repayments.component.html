@@ -1,0 +1,168 @@
+<div>
+    <h4 class="page_title text--capital">Upload Repayment</h4>
+  
+    <div>
+        <nz-tabset (nzSelectChange)="reset()">
+            <nz-tab nzTitle="Bank Upload">
+              <ng-template nz-tab>
+              <div class="row">
+                <div class="col-5">
+                    <div class="card border-0">
+                      <div nz-row [nzGutter]="16" class="mb-3">
+                          <div nz-col nzXs="24" class="gutter-row">
+                              <nz-select [(ngModel)]="type" nzSize="large"
+                                  nzPlaceHolder="Repayment Type" [nzSuffixIcon]="suffixBulkSelect">
+                                  <nz-option nzValue="1" nzLabel="RSP"></nz-option>
+                                  <nz-option nzValue="2" nzLabel="IPPIS"></nz-option>
+                                </nz-select>
+                                <ng-template #suffixBulkSelect>
+                                  <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
+                                </ng-template>
+                          </div>
+                        </div>
+                        <div nz-row [nzGutter]="16" class="mb-3">
+                          <div nz-col nzXs="24" class="gutter-row">
+                              <div class="import_select" (click)="fileInput.click()" (change)="onRSPInputChange($event)">
+                                  <div class="text--center"> 
+                                      <input accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" #fileInput style="display: none;">
+                                   <img src="assets/images/upload.svg" width="40" alt="" srcset="">
+                                   <p class="import_text text--secondary text--medium text--capital mt2">Select File</p>
+                                   <p class="import_text text--ash text--medium text--capital mt2">{{selectedRSPFile?.name}}</p>
+                                  </div>
+                               </div>
+                          </div>
+                        </div>
+                        <div nz-row [nzGutter]="16" nzJustify="space-between" class="action-row mt4">
+                          <div nz-col class="gutter-row" nzSpan>
+                              <button (click)="uploadRSPRepayments()" [disabled]="!selectedRSPFile || isUploading" class="button button--secondary text--capital">
+                                  Upload RSP
+                              </button>
+                          </div>
+                          <div nz-col class="gutter-row" nzSpan>
+                              <button (click)="reset()" class="button button--secondary text--capital">
+                                  reset
+                              </button>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+               <!-- <div class="import_wrapper">
+                <h4 class="import_text card_header mb2">Add Payment</h4>
+                <div class="import_select" (click)="fileInput.click()" (change)="onRSPInputChange($event)">
+                   <div class="text--center"> 
+                       <input accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" #fileInput style="display: none;">
+                    <img src="assets/images/upload.svg" width="60" height="60" alt="" srcset="">
+                    <p class="import_text text--secondary text--medium text--capital mt2">Select File</p>
+                    <p class="import_text text--ash text--medium text--capital mt2">{{selectedRSPFile?.name}}</p>
+                   </div>
+                </div>
+                <div nz-row [nzGutter]="16" nzJustify="space-between" class="action-row mt4">
+                    <div nz-col class="gutter-row" nzSpan>
+                        <button (click)="uploadRSPRepayments()" [disabled]="!selectedRSPFile || isUploading" class="button button--secondary text--capital">
+                            Upload RSP
+                        </button>
+                    </div>
+                    <div nz-col class="gutter-row" nzSpan>
+                        <button (click)="reset()" class="button button--secondary text--capital">
+                            reset
+                        </button>
+                    </div>
+                </div>
+               </div> -->
+
+                <!-- <div class="mt5" *ngIf="allRSPRepayments && allRSPRepayments.length">
+                    <div class="customtable_block">
+                        <table class="customtable">
+                            <thead>
+                              <tr>
+                                  <th>S/No</th>
+                                <th>Loan ID</th>
+                                <th>Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let data of allRSPRepayments; let index = index">
+                                  <td>
+                                      {{index + 1}}
+                                  </td>
+                                  <td>
+                                      {{data.loanid}}
+                                  </td>
+                                  <td>
+                                      {{data.amount | currency:'₦'}}
+                                  </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                </div> -->
+              </ng-template>
+            </nz-tab>
+            <nz-tab nzTitle="IPPIS Repayments">
+              <ng-template nz-tab>
+               <div class="import_wrapper">
+                <h4 class="import_text card_header mb2">Add Payment</h4>
+                <div class="import_select" (click)="fileInput.click()" (change)="onIPPISInputChange($event)">
+                   <div class="text--center"> 
+                       <input accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" #fileInput style="display: none;">
+                    <img src="assets/images/upload.svg" width="60" height="60" alt="" srcset="">
+                    <p class="import_text text--secondary text--medium text--capital mt2">Select File</p>
+                    <p class="import_text text--ash text--medium text--capital mt2">{{selectedIPPISFile?.name}}</p>
+                   </div>
+                </div>
+                
+                <div nz-row [nzGutter]="16" nzJustify="space-between" class="action-row mt4">
+                    <div nz-col class="gutter-row" nzSpan>
+                        <button (click)="uploadIPPISRepayments()" [disabled]="!selectedIPPISFile || isUploading" class="button button--secondary text--capital">
+                            Upload IPPIS
+                        </button>
+                    </div>
+                    <div nz-col class="gutter-row" nzSpan>
+                        <button (click)="reset()" class="button button--secondary text--capital">
+                            reset
+                        </button>
+                    </div>
+                </div>
+               </div>
+
+
+                <div class="mt5" *ngIf="allIPPISRepayments && allIPPISRepayments.length">
+                    <div class="customtable_block">
+                        <table class="customtable">
+                            <thead>
+                              <tr>
+                                  <th>S/No</th>
+                                <th>Loan ID</th>
+                                <th>Amount</th>
+                                <th>IPPIS Number</th>
+                                <th>Payment Date</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let data of allIPPISRepayments; let index = index">
+                                  <td>
+                                      {{index + 1}}
+                                  </td>
+                                  <td>
+                                      {{data.loan_id}}
+                                  </td>
+                                  <td>
+                                      {{data.amount | currency:'₦'}}
+                                  </td>
+                                  <td>
+                                    {{data.ippis_no | currency:'₦'}}
+                                </td>
+                                <td>
+                                    {{data.payment_date}}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+              </ng-template>
+            </nz-tab>
+          </nz-tabset>
+    </div>
+  </div>

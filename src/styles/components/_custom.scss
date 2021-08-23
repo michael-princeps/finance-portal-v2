@@ -1,0 +1,47 @@
+@import '../abstract/variables';
+// @import "~ng-zorro-antd/select/style/index.min.css";
+
+nz-select {
+    width: 100%;
+  
+    nz-select-top-control {
+        // border: none !important;
+        border-radius: 5px !important;
+  
+        nz-select-item {
+          color: $color-deep-black !important;
+          opacity: 1 !important;
+        }
+  
+        nz-select-placeholder {
+          color: $color-deep-black !important;
+          opacity: 1;
+        }
+      }
+  
+      nz-select-arrow {
+        top: 25% !important;
+        margin-top: 0 !important;
+      }
+  }
+  
+  nz-input-group {
+    // border: none !important;
+    border-radius: 5px !important;
+  
+    input {
+      color: $color-deep-black !important;
+  
+      &::placeholder {
+        color: $color-deep-black !important;
+      }
+    }
+  
+    .ant-input-prefix {
+        margin-right: 10px !important;
+      }
+  }
+  
+  nz-date-picker{
+    border-radius: 5px !important;
+  }

@@ -1,0 +1,58 @@
+@import '../abstract/variables';
+
+.page {
+  // margin-bottom: 2rem;
+
+  &_title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 24px;
+    color: $color-deep-black;
+    margin-bottom: 3rem;
+
+    @media all and (min-width: 768px) {
+      // font-size: $font-size-extra-large;
+      font-size: $font-size-large;
+    }
+  }
+
+  &__subtitle {
+    color: $color-ash;
+    font-size: 1.4rem;
+  }
+}
+
+.border-bottom {
+  border-bottom: 1px solid #f9f9f9 !important;
+}
+
+.border-top {
+  border-top: 1px solid #f9f9f9 !important;
+}
+
+.border {
+  border: 1px solid rgb(0 0 0 / .1) !important;
+}
+
+.radius {
+  border-radius: 1rem;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.bg{
+  &--success {
+    background-color: $color-green !important;
+  }
+
+  &--danger {
+    background-color: $color-danger !important;
+  }
+
+  &--dark {
+    background-color: $color-primary !important;
+  }
+}

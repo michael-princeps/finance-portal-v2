@@ -1,0 +1,39 @@
+<header class="header">
+    <div class="header_wrapper">
+      <h4 class="user">
+          {{getTimeOfDay()}}, <span class="user_name">{{user?.firstname}}</span>
+        </h4>
+        <div class="user_action">
+            <div class="header_date">
+                {{currentDate}}
+            </div>
+            <div class="user_dropdown">
+                <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+                 <div style="display: flex; align-items: center;">
+                    <!-- <div class="user_avatar" [ngStyle]="{'background-image': 'url(' + user?.photo_url+ ')'}" >
+                    </div> -->
+                    <nz-avatar nzSize="large" [nzSrc]="user?.photo_url"></nz-avatar>
+                    <img src="assets/images/chevron-down.svg" width="24" height="24">
+                 </div>
+                  </a>
+                  <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu>
+                      <li nz-menu-item class="text--capital"> 
+                        <a href="https://intranet.creditwallet.ng">
+                          &nbsp;go to intranet&nbsp;
+                        </a>
+                      </li>
+                      <li nz-menu-item class="text--capital"> 
+                        <a href="https://staff.creditwallet.ng/dashboard">&nbsp;go to staff portal&nbsp;</a>
+                      </li>
+                      <!-- <li nz-menu-divider></li> -->
+                      <li nz-menu-item class="text--capital">
+                        <a (click)="logUserOut()">&nbsp;log out&nbsp;</a>
+                      </li>
+                    </ul>
+                  </nz-dropdown-menu>
+            </div>
+            
+        </div>
+    </div>
+</header>

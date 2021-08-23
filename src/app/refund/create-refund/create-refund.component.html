@@ -1,0 +1,99 @@
+<div>
+  <h4 class="page_title text--capital">initiate refund</h4>
+
+  <div nz-row [nzGutter]="[10, 10]">
+    <div nz-col nzSpan="10" class="gutter-row">
+      <div class="card border-0">
+        <form nz-form nzLayout="vertical" [formGroup]="createRefundForm" (ngSubmit)="fetchRefundDetails()">
+          <nz-form-item>
+            <nz-form-label>Loan ID</nz-form-label>
+            <nz-form-control nzErrorTip="Please enter Loan ID">
+              <input nzSize='large' type="text" nz-input formControlName="loanid" class="text--upper" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>Amount</nz-form-label>
+            <nz-form-control nzErrorTip="Please enter amount">
+              <input nzSize='large' type="number" nz-input formControlName="amount" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <div class="text--right">
+                <button class="button button--wide button--secondary text--white text--capital">
+                  fetch details
+                </button>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="verifiedRefundDetails" class="animated slideInLeft faster my-3">
+    <div class="customtable--bordered" style="border-radius: 10px;">
+      <table class="customtable">
+        <tbody>
+          <tr>
+            <th style="padding:15px" scope="row">Loan ID</th>
+            <td style="padding:15px">
+              {{verifiedRefundDetails.loanid | uppercase}}
+            </td>
+          </tr>
+          <tr>
+            <th style="padding:15px" scope="row">Refund Amount</th>
+            <td style="padding:15px">
+              {{verifiedRefundDetails.amount | currency: '₦'}}
+            </td>
+          </tr>
+          <tr>
+            <th style="padding:15px" scope="row">System Due Amount</th>
+            <td style="padding:15px">
+              {{verifiedRefundDetails.due_payment | currency: '₦'}}
+            </td>
+          </tr>
+          <tr>
+            <th style="padding:15px" scope="row">Account Name</th>
+            <td style="padding:15px">
+              {{verifiedRefundDetails.accountname}}
+            </td>
+          </tr>
+          <tr>
+            <th style="padding:15px" scope="row">Account Number</th>
+            <td style="padding:15px">
+              {{verifiedRefundDetails.accountnumber}}
+            </td>
+          </tr>
+          <tr>
+            <th style="padding:15px" scope="row">Bank Name</th>
+            <td style="padding:15px">
+              {{getBankName(verifiedRefundDetails.bankcode) | uppercase}}
+            </td>
+          </tr>
+          <tr>
+            <th style="padding:15px" scope="row">Email</th>
+            <td style="padding:15px">
+              {{verifiedRefundDetails.email}}
+            </td>
+          </tr>
+          <tr>
+            <th style="padding:15px" scope="row">Telephone</th>
+            <td style="padding:15px">
+              {{verifiedRefundDetails.telephone}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <ng-container *ngIf="verifiedAccount">
+    <div class="mt-5 mb-4">
+      <label class="text--primary text--bold">Comment/Note</label>
+      <textarea nz-input class="text--regular-alt" [(ngModel)]="comment" name="comment"
+        [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
+    </div>
+
+    <button (click)="initiateRefund()" class="button button--secondary text--capital" type="button">Start Refund
+      Process</button>
+  </ng-container>
+</div>

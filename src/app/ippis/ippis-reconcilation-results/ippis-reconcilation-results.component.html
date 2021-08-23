@@ -1,0 +1,240 @@
+<div>
+    <h4 class="page_title text--capital">Reconcilation Results</h4>
+  
+    <div class="ippis">
+        <div nz-row [nzGutter]="16" class="">
+            <div nz-col class="gutter-row" nzSpan="14">
+              <div class="card card_colored border-0">
+                <div nz-row [nzGutter]="[10, 10]" nzAlign="bottom">
+                  <div nz-col nzSpan="9" class="gutter-row">
+                    <label class="text--regular-alt text--deep-black mb-1 text--capital" for="searchdate">Date</label>
+                    <input nzSize="large" [(ngModel)]="searchdate" id="searchdate" type="date" nz-input>
+                  </div>
+                  <div nz-col nzSpan="9" class="gutter-row">
+                    <label class="text--regular-alt text--deep-black mb-1 text--capital" for="seacrhtext">Search
+                      Text</label>
+                    <input nzSize="large" [(ngModel)]="searchtext" id="seacrhtext" type="text" placeholder="Search..."
+                      nz-input>
+                  </div>
+                  <div nz-col class="gutter-row">
+                    <button (click)="searchPayments()" class="button button--secondary text--capital">
+                      Fetch Results
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+     <div class="mt-5">
+        <nz-tabset (nzSelectChange)="changeIndex($event)">
+            <nz-tab [nzTitle]="titleTemplate">
+                <ng-template #titleTemplate>
+                    Exact Deductions
+                    <sup class="text--primary">{{exactDeductions ? exactDeductions.length : '0'}}</sup>
+                  </ng-template>
+              <ng-template nz-tab>
+                <table class="customtable">
+                    <thead>
+                      <tr>
+                        <th>
+                          &nbsp;
+                        </th>
+                        <th>Month</th>
+                          <th>Year</th>
+                          <th>IPPIS Number</th>
+                          <th>Full Name</th>
+                          <th>Loan Id</th>
+                          <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="exactDeductions && exactDeductions.length; else noPaymentsUploaded">
+                        <tr *ngFor="let result of exactDeductions; let i = index ">
+                          <td>{{i + 1}}</td>
+                          <td>{{result.month}}</td>
+                          <td>{{result.year}}</td>
+                          <td>{{result.ippis_number}}</td>
+                          <td>{{result.full_name  | titlecase }} </td>
+                          <td>{{result.loan_id}}</td>
+                          <td>{{result.expected_amount | currency:'₦'}}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+              </ng-template>
+            </nz-tab>
+            <nz-tab [nzTitle]="titleTemplate2">
+                <ng-template #titleTemplate2>
+                    Less Deductions
+                    <sup class="text--primary">{{lessDeductionPayments ? lessDeductionPayments.length : '0'}}</sup>
+                  </ng-template>
+              <ng-template nz-tab>
+                <table class="customtable">
+                    <thead>
+                      <tr>
+                        <th>
+                          &nbsp;
+                        </th>
+                        <th>Month</th>
+                          <th>Year</th>
+                          <th>IPPIS Number</th>
+                          <th>Full Name</th>
+                          <th>Loan Id</th>
+                          <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="lessDeductionPayments && lessDeductionPayments.length; else noPaymentsUploaded">
+                        <tr *ngFor="let result of lessDeductionPayments; let i = index ">
+                          <td>{{i + 1}}</td>
+                          <td>{{result.month}}</td>
+                          <td>{{result.year}}</td>
+                          <td>{{result.ippis_number}}</td>
+                          <td>{{result.full_name  | titlecase }} </td>
+                          <td>{{result.loan_id}}</td>
+                          <td>{{result.expected_amount | currency:'₦'}}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+              </ng-template>
+            </nz-tab>
+            <nz-tab [nzTitle]="titleTemplate3">
+                <ng-template #titleTemplate3>
+                    Missed Payment
+                    <sup class="text--primary">{{missedPayments ? missedPayments.length : '0'}}</sup>
+                  </ng-template>
+              <ng-template nz-tab>
+                <table class="customtable">
+                    <thead>
+                      <tr>
+                        <th>
+                          &nbsp;
+                        </th>
+                        <th>Month</th>
+                          <th>Year</th>
+                          <th>IPPIS Number</th>
+                          <th>Full Name</th>
+                          <th>Loan Id</th>
+                          <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="missedPayments && missedPayments.length; else noPaymentsUploaded">
+                        <tr *ngFor="let result of missedPayments; let i = index ">
+                          <td>{{i + 1}}</td>
+                          <td>{{result.month}}</td>
+                          <td>{{result.year}}</td>
+                          <td>{{result.ippis_number}}</td>
+                          <td>{{result.full_name  | titlecase }} </td>
+                          <td>{{result.loan_id}}</td>
+                          <td>{{result.expected_amount | currency:'₦'}}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+              </ng-template>
+            </nz-tab>
+            <nz-tab [nzTitle]="titleTemplate4">
+                <ng-template #titleTemplate4>
+                    Non Expected Payment 
+                    <sup class="text--primary">{{nonexpectedPayments ? nonexpectedPayments.length : '0'}}</sup>
+                  </ng-template>
+              <ng-template nz-tab>
+                <table class="customtable">
+                    <thead>
+                      <tr>
+                        <th>
+                          &nbsp;
+                        </th>
+                        <th>Month</th>
+                          <th>Year</th>
+                          <th>IPPIS Number</th>
+                          <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="nonexpectedPayments && nonexpectedPayments.length; else noPaymentsUploaded">
+                        <tr *ngFor="let result of nonexpectedPayments; let i = index ">
+                          <td>{{i + 1}}</td>
+                          <td>{{result.month}}</td>
+                        <td>{{result.year}}</td>
+                        <td>{{result.ippis_number}}</td>
+                        <td>{{result.amount_paid | currency:'₦'}}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+              </ng-template>
+            </nz-tab>
+            <nz-tab [nzTitle]="titleTemplate5">
+                <ng-template #titleTemplate5>
+                    Over Deduction
+                    <sup class="text--primary">{{overDeductionPayments ? overDeductionPayments.length : '0'}}</sup>
+                  </ng-template>
+              <ng-template nz-tab>
+                <table class="customtable">
+                    <thead>
+                      <tr>
+                        <th>
+                          &nbsp;
+                        </th>
+                        <th>Month</th>
+                          <th>Year</th>
+                          <th>IPPIS Number</th>
+                          <th>Full Name</th>
+                          <th>Loan Id</th>
+                          <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="overDeductionPayments && overDeductionPayments.length; else noPaymentsUploaded">
+                        <tr *ngFor="let result of overDeductionPayments; let i = index ">
+                          <td>{{i + 1}}</td>
+                          <td>{{result.month}}</td>
+                          <td>{{result.year}}</td>
+                          <td>{{result.ippis_number}}</td>
+                          <td>{{result.full_name  | titlecase }} </td>
+                          <td>{{result.loan_id}}</td>
+                          <td>{{result.expected_amount | currency:'₦'}}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+              </ng-template>
+            </nz-tab>
+          </nz-tabset>
+          <div class="customtable_footer">
+            <p class="paginate_text text--ash">
+              Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+                [nzMax]="allPayments?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.allPayments?.total}}
+              results
+            </p>
+            <div class="paginate">
+              <span class="paginate_text">
+                {{this.allPayments?.from}} - {{this.allPayments?.to}}
+              </span>
+              <div class="button-group">
+                <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+                  <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+                </button>
+                <button (click)="goNext()" class="button button_paginate_next text--capital">
+                  <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+                </button>
+              </div>
+            </div>
+          </div>
+     </div>
+    </div>
+  </div>
+  
+  <ng-template #noPaymentsUploaded>
+    <tr>
+      <td colspan="7">
+        <div class="text--center p-5">
+          No payments uploaded yet
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  
