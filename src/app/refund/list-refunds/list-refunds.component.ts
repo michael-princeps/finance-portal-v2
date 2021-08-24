@@ -14,6 +14,7 @@ import { ProjectService } from 'src/app/core/services/project.service';
 })
 export class ListRefundsComponent implements OnInit, AfterViewInit, OnDestroy {
   status: any;
+  refundObject: any;
   allRefunds: any;
   allRefundsData: any[];
   pageSize = 20;
@@ -44,6 +45,7 @@ export class ListRefundsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.refundsSubscription.unsubscribe();
   }
   resetPageParams() {
+    this.refundObject = null;
     this.allRefunds = null;
     this.allRefundsData = null;
     this.search_text = '';
@@ -88,6 +90,7 @@ export class ListRefundsComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     this.refundsSubscription = this.service.listRefunds(params).subscribe((data: any) => {
       if (data.status === 'success') {
+        this.refundObject = data;
         this.allRefunds = data.refund;
         this.allRefundsData = data.refund.data;
       }
@@ -113,6 +116,7 @@ export class ListRefundsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
       this.service.fetchMoreRecords(this.allRefunds.next_page_url, json).subscribe((data: any) => {
         if (data.status === 'success') {
+          this.refundObject = data;
           this.allRefunds = data.refund;
           this.allRefundsData = data.refund.data;
         }
@@ -131,6 +135,7 @@ export class ListRefundsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
       this.service.fetchMoreRecords(this.allRefunds.prev_page_url, json).subscribe((data: any) => {
         if (data.status === 'success') {
+          this.refundObject = data;
           this.allRefunds = data.refund;
           this.allRefundsData = data.refund.data;
         }
@@ -149,6 +154,7 @@ export class ListRefundsComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.service.listRefunds(pageDetails);
     })).subscribe((data: any) => {
       if (data.status === 'success') {
+        this.refundObject = data;
         this.allRefunds = data.refund;
         this.allRefundsData = data.refund.data;
       }
@@ -166,6 +172,7 @@ export class ListRefundsComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.service.listRefunds(pageDetails);
     })).subscribe((data: any) => {
       if (data.status === 'success') {
+        this.refundObject = data;
         this.allRefunds = data.refund;
         this.allRefundsData = data.refund.data;
       }

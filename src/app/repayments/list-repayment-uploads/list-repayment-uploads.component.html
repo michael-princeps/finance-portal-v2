@@ -30,14 +30,12 @@
                 <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
               </ng-template>
             </div>
-            <div nz-col class="gutter-row">
-              <button class="button button--secondary text--capital" (click)="listRepayments()">
-                Fetch repayments
-              </button>
-            </div>
           </div>
         </div>
       </div>
+      <button class="button button--secondary text--capital mt-4" (click)="listRepayments()">
+        Fetch repayments
+      </button>
     </div>
     <ng-container *ngIf="repaymentsData">
       <div class="mt-5">
@@ -47,10 +45,8 @@
               <th>
                 &nbsp;
               </th>
-              <!-- <th>Mode</th> -->
               <th>Date</th>
-              <th>Loan ID</th>
-              <th>Amount</th>
+              <th>Document Name</th>
               <th>Type</th>
               <th>Status</th>
             </tr>
@@ -59,21 +55,29 @@
             <ng-container *ngIf="repaymentsData && repaymentsData.length; else norepayments">
               <tr *ngFor="let loan of repaymentsData; let index = index">
                 <td>
-                  <a [routerLink]="['/repayments/view', loan.id]"
+                  <a [routerLink]="['/repayments/view', loan.id]" [queryParams]="{status: loan.status}"
                     class="button button--secondary button--sm text--capital">
                     view
                   </a>
                 </td>
-                <td>{{loan.date_created | date:'dd/MM/yyyy h:mm a'}}</td>
-                <td>{{loan.loanid}}</td>
-                <td>{{loan.amount | currency: '₦'}}</td>
-                <td>{{loan.type}}</td>
-                <td>{{loan.type}}</td>
+                <td>{{loan.created_at | date:'dd/MM/yyyy h:mm a'}}</td>
+                <td>{{loan.name}}</td>
+                <td>
+                  {{loan.type == '1' ? 'RSP' : 'IPPIS'}}
+                </td>
+                <td>
+                  <span *ngIf="loan.status == '0'" class="badge badge-primary">
+                    New
+                  </span>
+                  <span *ngIf="loan.status == '1'" class="badge badge-success">
+                    Processed
+                  </span>
+                </td>
               </tr>
             </ng-container>
             <ng-template #norepayments>
               <tr>
-                <td colspan="7" class="text--center">
+                <td colspan="5" class="text--center">
                   No repayments yet
                 </td>
               </tr>

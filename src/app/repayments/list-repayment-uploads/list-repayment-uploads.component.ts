@@ -63,8 +63,8 @@ constructor(private notification: NzNotificationService, private service: Projec
       return this.service.listUploadedRepayments(pageDetails);
     })).subscribe((data: any) => {
       if (data.status === 'success') {
-        this.repayments = data.repayments;
-        this.repaymentsData = data.repayments.data;
+        this.repayments = data.documents;
+        this.repaymentsData = data.documents.data;
       }
     });
   }
@@ -78,7 +78,7 @@ constructor(private notification: NzNotificationService, private service: Projec
   }
 
   listRepayments() {
-    if (!this.type) {
+    if (!this.type || !this.status) {
       this.notification.info('Incomplete!', 'Please select type');
     } else {
       const params = {
@@ -90,8 +90,8 @@ constructor(private notification: NzNotificationService, private service: Projec
       };
       this.service.listUploadedRepayments(params).subscribe((data: any) => {
         if (data.status === 'success') {
-          this.repayments = data.repayments;
-          this.repaymentsData = data.repayments.data;
+          this.repayments = data.documents;
+          this.repaymentsData = data.documents.data;
         }
       });
     }
@@ -111,8 +111,8 @@ constructor(private notification: NzNotificationService, private service: Projec
       };
       this.service.fetchMoreRecords(this.repayments.next_page_url, json).subscribe((data: any) => {
         if (data.status === 'success') {
-          this.repayments = data.repayments;
-          this.repaymentsData = data.repayments.data;
+          this.repayments = data.documents;
+          this.repaymentsData = data.documents.data;
         }
       });
     }
@@ -131,8 +131,8 @@ constructor(private notification: NzNotificationService, private service: Projec
       };
       this.service.fetchMoreRecords(this.repayments.prev_page_url, json).subscribe((data: any) => {
         if (data.status === 'success') {
-          this.repayments = data.repayments;
-          this.repaymentsData = data.repayments.data;
+          this.repayments = data.documents;
+          this.repaymentsData = data.documents.data;
         }
       });
     }

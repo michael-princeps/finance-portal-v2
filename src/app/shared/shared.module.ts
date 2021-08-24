@@ -24,15 +24,17 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { MonthFormaterPipe } from './pipes/month-formater.pipe';
 import { PaginationComponent } from './pagination/pagination.component';
+import { BankNamePipe } from './pipes/bank-name.pipe';
 
 
 @NgModule({
-  declarations: [MonthFormaterPipe, PaginationComponent],
+  declarations: [MonthFormaterPipe, PaginationComponent, BankNamePipe],
   imports: [
     CommonModule
   ],
   exports: [
     MonthFormaterPipe,
+    BankNamePipe,
     NzDropDownModule,
     FormsModule,
     ReactiveFormsModule,

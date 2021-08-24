@@ -1,208 +1,210 @@
 <div>
   <h4 class="page_title text--capital">{{pageTitle}}</h4>
 
-  <ng-container *ngIf="routeId == '1'">
-    <nz-tabset (nzSelectChange)="changeIndex($event)">
-      <nz-tab nzTitle="New Entry">
-        <ng-template nz-tab>
-          <div nz-row [nzGutter]="16" class="my-4">
-            <div nz-col class="gutter-row" nzSpan="5">
-              <!-- <input nz-input placeholder="large size"  /> -->
-              <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
-                <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text"
-                  (ngModelChange)="changeSearch($event)" />
-              </nz-input-group>
-              <ng-template #suffixIconSearch>
-                <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
-              </ng-template>
-            </div>
-          </div>
-          <div class="customtable_block">
-            <table class="customtable mt-2">
-              <thead>
-                <tr>
-                  <th>
-                    &nbsp;
-                  </th>
-                  <th>Options</th>
-                  <th>Date Created</th>
-                  <th>Loan ID</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngIf="allRefundsData && allRefundsData.length; else norefund">
-                  <tr *ngFor="let refund of allRefundsData; let i = index ">
-                    <td>{{i + 1}}</td>
-                    <td>
-                      <a class="button button--secondary-outline" [routerLink]="['/refunds/view', refund.id]">View</a>
-                    </td>
-                    <td>{{refund.datecreated  | date:'dd/MM/yyyy h:mm a'  }}</td>
-                    <td>{{refund.loan_id | uppercase}}</td>
-                    <td>{{refund.amount | currency:'₦'}}</td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-          </div>
-          <div class="customtable_footer">
-            <p class="paginate_text text--ash">
-              Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
-                [nzMax]="allRefunds?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.allRefunds?.total}}
-              results
-            </p>
-            <div class="paginate">
-              <span class="paginate_text">
-                {{this.allRefunds?.from}} - {{this.allRefunds?.to}}
-              </span>
-              <div class="button-group">
-                <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
-                  <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
-                </button>
-                <button (click)="goNext()" class="button button_paginate_next text--capital">
-                  <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
-                </button>
+  <div *ngIf="refundObject">
+    <ng-container *ngIf="routeId == '1'">
+      <nz-tabset (nzSelectChange)="changeIndex($event)">
+        <nz-tab nzTitle="New Entry">
+          <ng-template nz-tab>
+            <div nz-row [nzGutter]="16" class="my-4">
+              <div nz-col class="gutter-row" nzSpan="5">
+                <!-- <input nz-input placeholder="large size"  /> -->
+                <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
+                  <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text"
+                    (ngModelChange)="changeSearch($event)" />
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                  <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
+                </ng-template>
               </div>
             </div>
-          </div>
-        </ng-template>
-      </nz-tab>
-      <nz-tab nzTitle="Error in Processing">
-        <ng-template nz-tab>
-          <div nz-row [nzGutter]="16" class="my-4">
-            <div nz-col class="gutter-row" nzSpan="5">
-              <!-- <input nz-input placeholder="large size"  /> -->
-              <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
-                <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text"
-                  (ngModelChange)="changeSearch($event)" />
-              </nz-input-group>
-              <ng-template #suffixIconSearch>
-                <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
-              </ng-template>
-            </div>
-          </div>
-          <div class="customtable_block">
-            <table class="customtable mt-2">
-              <thead>
-                <tr>
-                  <th>
-                    &nbsp;
-                  </th>
-                  <th>Options</th>
-                  <th>Date Created</th>
-                  <th>Loan ID</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngIf="allRefundsData && allRefundsData.length; else norefund">
-                  <tr *ngFor="let refund of allRefundsData; let i = index ">
-                    <td>{{i + 1}}</td>
-                    <td>
-                      <a class="button button--secondary-outline" [routerLink]="['/refunds/view', refund.id]">View</a>
-                    </td>
-                    <td>{{refund.datecreated  | date:'dd/MM/yyyy h:mm a'  }}</td>
-                    <td>{{refund.loan_id | uppercase}}</td>
-                    <td>{{refund.amount | currency:'₦'}}</td>
+            <div class="customtable_block">
+              <table class="customtable mt-2">
+                <thead>
+                  <tr>
+                    <th>
+                      &nbsp;
+                    </th>
+                    <th>Options</th>
+                    <th>Date Created</th>
+                    <th>Loan ID</th>
+                    <th>Amount</th>
                   </tr>
-                </ng-container>
-              </tbody>
-            </table>
-          </div>
-          <div class="customtable_footer">
-            <p class="paginate_text text--ash">
-              Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
-                [nzMax]="allRefunds?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.allRefunds?.total}}
-              results
-            </p>
-            <div class="paginate">
-              <span class="paginate_text">
-                {{this.allRefunds?.from}} - {{this.allRefunds?.to}}
-              </span>
-              <div class="button-group">
-                <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
-                  <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
-                </button>
-                <button (click)="goNext()" class="button button_paginate_next text--capital">
-                  <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
-                </button>
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="allRefundsData && allRefundsData.length; else norefund">
+                    <tr *ngFor="let refund of allRefundsData; let i = index ">
+                      <td>{{i + 1}}</td>
+                      <td>
+                        <a class="button button--secondary button--sm" [routerLink]="['/refunds/view', refund.id]">View</a>
+                      </td>
+                      <td>{{refund.datecreated  | date:'dd/MM/yyyy h:mm a'  }}</td>
+                      <td>{{refund.loan_id | uppercase}}</td>
+                      <td>{{refund.amount | currency:'₦'}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <div class="customtable_footer">
+              <p class="paginate_text text--ash">
+                Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+                  [nzMax]="allRefunds?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.allRefunds?.total}}
+                results
+              </p>
+              <div class="paginate">
+                <span class="paginate_text">
+                  {{this.allRefunds?.from}} - {{this.allRefunds?.to}}
+                </span>
+                <div class="button-group">
+                  <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+                    <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+                  </button>
+                  <button (click)="goNext()" class="button button_paginate_next text--capital">
+                    <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </ng-template>
-      </nz-tab>
-    </nz-tabset>
-  </ng-container>
-  <ng-container *ngIf="routeId != '1'">
-    <div nz-row [nzGutter]="16" class="my-4">
-      <div nz-col class="gutter-row" nzSpan="5">
-        <!-- <input nz-input placeholder="large size"  /> -->
-        <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
-          <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text"
-            (ngModelChange)="changeSearch($event)" />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-          <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
-        </ng-template>
-      </div>
-    </div>
-    <div class="customtable_block">
-      <table class="customtable mt-2">
-        <thead>
-          <tr>
-            <th>
-              &nbsp;
-            </th>
-            <th>Options</th>
-            <th>Date Created</th>
-            <th>Loan ID</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngIf="allRefundsData && allRefundsData.length; else norefund">
-            <tr *ngFor="let refund of allRefundsData; let i = index ">
-              <td>{{i + 1}}</td>
-              <td>
-                <a class="button button--secondary-outline" [routerLink]="['/refunds/view', refund.id]">View</a>
-              </td>
-              <td>{{refund.datecreated  | date:'dd/MM/yyyy h:mm a'  }}</td>
-              <td>{{refund.loan_id | uppercase}}</td>
-              <td>{{refund.amount | currency:'₦'}}</td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
-    <div class="customtable_footer">
-      <p class="paginate_text text--ash">
-        Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
-          [nzMax]="allRefunds?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.allRefunds?.total}}
-        results
-      </p>
-      <div class="paginate">
-        <span class="paginate_text">
-          {{this.allRefunds?.from}} - {{this.allRefunds?.to}}
-        </span>
-        <div class="button-group">
-          <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
-            <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
-          </button>
-          <button (click)="goNext()" class="button button_paginate_next text--capital">
-            <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
-          </button>
+          </ng-template>
+        </nz-tab>
+        <nz-tab nzTitle="Error in Processing">
+          <ng-template nz-tab>
+            <div nz-row [nzGutter]="16" class="my-4">
+              <div nz-col class="gutter-row" nzSpan="5">
+                <!-- <input nz-input placeholder="large size"  /> -->
+                <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
+                  <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text"
+                    (ngModelChange)="changeSearch($event)" />
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                  <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
+                </ng-template>
+              </div>
+            </div>
+            <div class="customtable_block">
+              <table class="customtable mt-2">
+                <thead>
+                  <tr>
+                    <th>
+                      &nbsp;
+                    </th>
+                    <th>Options</th>
+                    <th>Date Created</th>
+                    <th>Loan ID</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="allRefundsData && allRefundsData.length; else norefund">
+                    <tr *ngFor="let refund of allRefundsData; let i = index ">
+                      <td>{{i + 1}}</td>
+                      <td>
+                        <a class="button button--secondary-outline" [routerLink]="['/refunds/view', refund.id]">View</a>
+                      </td>
+                      <td>{{refund.datecreated  | date:'dd/MM/yyyy h:mm a'  }}</td>
+                      <td>{{refund.loan_id | uppercase}}</td>
+                      <td>{{refund.amount | currency:'₦'}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <div class="customtable_footer">
+              <p class="paginate_text text--ash">
+                Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+                  [nzMax]="allRefunds?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.allRefunds?.total}}
+                results
+              </p>
+              <div class="paginate">
+                <span class="paginate_text">
+                  {{this.allRefunds?.from}} - {{this.allRefunds?.to}}
+                </span>
+                <div class="button-group">
+                  <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+                    <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+                  </button>
+                  <button (click)="goNext()" class="button button_paginate_next text--capital">
+                    <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </nz-tab>
+      </nz-tabset>
+    </ng-container>
+    <ng-container *ngIf="routeId != '1'">
+      <div nz-row [nzGutter]="16" class="my-4">
+        <div nz-col class="gutter-row" nzSpan="5">
+          <!-- <input nz-input placeholder="large size"  /> -->
+          <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text"
+              (ngModelChange)="changeSearch($event)" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
+          </ng-template>
         </div>
       </div>
-    </div>
-  </ng-container>
-</div>
-
-<ng-template #norefund>
-  <tr>
-    <td colspan="5">
-      <div class="text--center p-5">
-        No refunds yet
+      <div class="customtable_block">
+        <table class="customtable mt-2">
+          <thead>
+            <tr>
+              <th>
+                &nbsp;
+              </th>
+              <th>Options</th>
+              <th>Date Created</th>
+              <th>Loan ID</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="allRefundsData && allRefundsData.length; else norefund">
+              <tr *ngFor="let refund of allRefundsData; let i = index ">
+                <td>{{i + 1}}</td>
+                <td>
+                  <a class="button button--secondary-outline" [routerLink]="['/refunds/view', refund.id]">View</a>
+                </td>
+                <td>{{refund.datecreated  | date:'dd/MM/yyyy h:mm a'  }}</td>
+                <td>{{refund.loan_id | uppercase}}</td>
+                <td>{{refund.amount | currency:'₦'}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
-    </td>
-  </tr>
-</ng-template>
+      <div class="customtable_footer">
+        <p class="paginate_text text--ash">
+          Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+            [nzMax]="allRefunds?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.allRefunds?.total}}
+          results
+        </p>
+        <div class="paginate">
+          <span class="paginate_text">
+            {{this.allRefunds?.from}} - {{this.allRefunds?.to}}
+          </span>
+          <div class="button-group">
+            <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+              <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+            </button>
+            <button (click)="goNext()" class="button button_paginate_next text--capital">
+              <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  
+  <ng-template #norefund>
+    <tr>
+      <td colspan="5">
+        <div class="text--center p-5">
+          No refunds yet
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  </div>

@@ -1,7 +1,8 @@
 <div>
   <h4 class="page_title text--capital">{{pageTitle}}</h4>
-
-
+  
+<ng-container *ngIf="liquidationObject">
+  
   <div nz-row [nzGutter]="16" class="my-4">
     <div nz-col class="gutter-row" nzSpan="5">
       <!-- <input nz-input placeholder="large size"  /> -->
@@ -35,7 +36,7 @@
           <tr *ngFor="let liquidation of allLiquidationData; let i = index ">
             <td>{{i + 1}}</td>
             <td>
-              <a class="button button--secondary-outline" [routerLink]="['/liquidations/view', liquidation.id]">View</a>
+              <a class="button button--secondary button--sm" [routerLink]="['/liquidations/view', liquidation.id]">View</a>
             </td>
             <td>{{liquidation.datecreated  | date:'dd/MM/yyyy h:mm a'  }}</td>
             <td>{{liquidation.loan_id}}</td>
@@ -77,4 +78,5 @@
       </div>
     </div>
   </div>
+</ng-container>
 </div>

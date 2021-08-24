@@ -1,0 +1,48 @@
+<div>
+  <h4 class="page_title text--capital">rollover investment</h4>
+
+  <div>
+    <div nz-row [nzGutter]="[10, 10]">
+      <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="10" class="gutter-row">
+        <div class="card border-0">
+          <form nz-form nzLayout="vertical" [formGroup]="rolloverForm" (ngSubmit)="processRollover()">
+            <nz-form-item>
+              <nz-form-label>Savings Account Number</nz-form-label>
+              <nz-form-control nzErrorTip="Please input Savings ID">
+                <input nzSize='large' class="verify_input" nz-input type="text" formControlName="savings_id" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label>Duration</nz-form-label>
+              <nz-form-control nzErrorTip="Please select duration">
+                <nz-select nzShowSearch nzSize="large" formControlName="duration" [nzSuffixIcon]="suffixIconSearchh">
+                  <nz-option nzLabel="6 months" nzValue="6"></nz-option>
+                  <nz-option nzLabel="12 months" nzValue="12"></nz-option>
+                </nz-select>
+                <ng-template #suffixIconSearchh>
+                  <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                <label nz-checkbox formControlName="notify">
+                  <span>Notify Investor</span>
+                </label>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                <div class="text--right">
+                  <button class="button button--wide button--secondary text--white text--capital">
+                    rollover
+                  </button>
+                </div>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

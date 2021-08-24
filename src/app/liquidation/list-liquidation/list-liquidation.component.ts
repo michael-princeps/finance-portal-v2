@@ -13,6 +13,7 @@ import { ProjectService } from 'src/app/core/services/project.service';
 })
 export class ListLiquidationComponent implements OnInit, AfterViewInit, OnDestroy {
   status: any;
+  liquidationObject: any;
   allLiquidation: any;
   allLiquidationData: any[];
   pageSize = 20;
@@ -39,6 +40,7 @@ export class ListLiquidationComponent implements OnInit, AfterViewInit, OnDestro
     this.liquidationSubscription.unsubscribe();
   }
   resetPageParams() {
+    this.liquidationObject = null;
     this.allLiquidation = null;
     this.allLiquidationData = null;
     this.search_text = '';
@@ -76,6 +78,7 @@ export class ListLiquidationComponent implements OnInit, AfterViewInit, OnDestro
     };
     this.liquidationSubscription = this.service.listLiquidations(params).subscribe((data: any) => {
       if (data.status === 'success') {
+        this.liquidationObject = data;
         this.allLiquidation = data.liquidation;
         this.allLiquidationData = data.liquidation.data;
       }
@@ -101,6 +104,7 @@ export class ListLiquidationComponent implements OnInit, AfterViewInit, OnDestro
       };
       this.service.fetchMoreRecords(this.allLiquidation.next_page_url, json).subscribe((data: any) => {
         if (data.status === 'success') {
+          this.liquidationObject = data;
           this.allLiquidation = data.liquidation;
           this.allLiquidationData = data.liquidation.data;
         }
@@ -119,6 +123,7 @@ export class ListLiquidationComponent implements OnInit, AfterViewInit, OnDestro
       };
       this.service.fetchMoreRecords(this.allLiquidation.prev_page_url, json).subscribe((data: any) => {
         if (data.status === 'success') {
+          this.liquidationObject = data;
           this.allLiquidation = data.liquidation;
           this.allLiquidationData = data.liquidation.data;
         }
@@ -137,6 +142,7 @@ export class ListLiquidationComponent implements OnInit, AfterViewInit, OnDestro
       return this.service.listLiquidations(pageDetails);
     })).subscribe((data: any) => {
       if (data.status === 'success') {
+        this.liquidationObject = data;
         this.allLiquidation = data.liquidation;
         this.allLiquidationData = data.liquidation.data;
       }
@@ -154,6 +160,7 @@ export class ListLiquidationComponent implements OnInit, AfterViewInit, OnDestro
       return this.service.listLiquidations(pageDetails);
     })).subscribe((data: any) => {
       if (data.status === 'success') {
+        this.liquidationObject = data;
         this.allLiquidation = data.liquidation;
         this.allLiquidationData = data.liquidation.data;
       }

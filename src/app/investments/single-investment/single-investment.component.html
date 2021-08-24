@@ -1,0 +1,446 @@
+<ng-container *ngIf="investment">
+  <div>
+    <h4 class="page_title text--secondary m-0">{{investmentUser.firstname | titlecase}}
+      {{investmentUser.lastname | titlecase}}</h4>
+    <hr>
+
+    <div nz-row [nzGutter]="[10, 10]" class="mb-1" *ngIf="investment.status == '0' || investment.status == '1'">
+      <div nz-col class="gutter-row">
+        <button class="button button--warning text--white text--capital" nz-popconfirm
+          nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="cancelInvestment()">
+          cancel
+        </button>
+      </div>
+    </div>
+    <ng-container *ngIf="investment.status == '0'">
+      <div nz-row [nzGutter]="[10, 10]">
+        <div nz-col class="gutter-row">
+          <button class="button button--primary-outline" data-toggle="modal"
+            data-target="#myModalEdit">
+            Edit Investor Details
+          </button>
+        </div>
+        <div nz-col class="gutter-row">
+            <button class="button button--primary-outline" 
+              data-toggle="modal" data-target="#myModal">Process Documents</button>
+          </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="investment.status == '1'">
+      <div nz-row [nzGutter]="[10, 10]">
+        <div nz-col class="gutter-row">
+          <button class="button button--primary-outline" data-toggle="modal"
+            data-target="#myModalEdit">
+            Edit Investor Details
+          </button>
+        </div>
+        <div nz-col class="gutter-row">
+          <button class="button button--primary-outline"  data-toggle="modal"
+            data-target="#myModalConfirm" (click)="populateForm()">
+            Upload to Loan Disk
+          </button>
+        </div>
+        <div nz-col class="gutter-row">
+          <button class="button button--primary-outline"  data-toggle="modal"
+            data-target="#myModalComplete">
+            Complete Investment
+          </button>
+        </div>
+        <div nz-col class="gutter-row">
+            <button class="button button--primary-outline" 
+              data-toggle="modal" data-target="#myModal">Process Documents</button>
+          </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="investment.status === '2'">
+      <div nz-row [nzGutter]="[10, 10]">
+        <div nz-col class="gutter-row">
+          <button [disabled]="investment.referral_payment === '1'" nz-popconfirm
+            nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="makeReferral(investment.id)" class="button button--primary-outline">Make Referral
+            Payment</button>
+        </div>
+        <div nz-col class="gutter-row">
+            <button class="button button--primary-outline" 
+              data-toggle="modal" data-target="#myModal">Process Documents</button>
+          </div>
+      </div>
+    </ng-container>
+
+
+    <div class="customtable--bordered mt-4" style="border-radius: 10px;">
+      <table class="customtable">
+        <tbody>
+
+          <tr>
+            <th scope="row">Tittle</th>
+            <td>{{investmentUser.title | titlecase}}</td>
+            <th scope="row">Gender</th>
+            <td>{{investmentUser.gender | titlecase}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Firstname</th>
+            <td>{{investmentUser.firstname | titlecase}}</td>
+            <th scope="row">Lastname</th>
+            <td>{{investmentUser.lastname | titlecase}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Email Address</th>
+            <td>{{investmentUser.email}}</td>
+            <th scope="row">CW Number</th>
+            <td>{{investmentUser.uniquenumber}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Telephone Number</th>
+            <td>{{investmentUser.telephone}}</td>
+            <th scope="row">Payment Reference</th>
+            <td>{{investment.paymentref}}</td>
+          </tr>
+
+          <tr>
+            <th scope="row">Bank Name</th>
+            <td>
+              <span>{{investmentUser.bankcode | bankName}}</span>
+            </td>
+            <th scope="row">Account Number</th>
+            <td>{{investmentUser.accountnumber}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Payment Bank Name</th>
+            <td>
+              <span>{{investmentUser.payment_bank_name | titlecase}}</span>
+            </td>
+            <th scope="row">Payment Account Number</th>
+            <td>{{investmentUser.payment_account_number}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="my-3">
+      <nz-tabset>
+        <nz-tab nzTitle="Investment Details">
+          <ng-template nz-tab>
+            <div nz-row [nzGutter]="[10, 10]">
+              <div nz-col class="gutter-row">
+                <a class="button button--primary-outline" target="blank"
+                  [href]="'https://test.creditwallet.ng/TestPDF/'+investment.process_investment_schedule">Proposed
+                  Deposit Terms</a>
+              </div>
+              <div nz-col class="gutter-row">
+                <a class="button button--primary-outline" target="blank"
+                  [href]="'https://test.creditwallet.ng/TestPDF/'+investment.process_savings_statement">Proposed
+                  Investment Schedule</a>
+              </div>
+              <div nz-col class="gutter-row">
+                <a class="button button--primary-outline" target="blank"
+                  [href]="'https://test.creditwallet.ng/TestPDF/'+investment.confirm_investment_schedule">Confirmed
+                  Deposit Terms</a>
+              </div>
+              <div nz-col class="gutter-row">
+                <a class="button button--primary-outline" target="blank"
+                  [href]="'https://test.creditwallet.ng/TestPDF/' + investment.confirm_savings_statement">Confirmed
+                  Investment Schedule</a>
+              </div>
+            </div>
+            <br>
+
+            <div class="customtable--bordered" style="border-radius: 10px;">
+              <table class="customtable">
+                <tbody>
+                  <tr>
+                    <th scope="row">Amount</th>
+                    <td>{{investment.amount  | currency:'₦ '}}</td>
+                    <th scope="row">Duration</th>
+                    <td>{{investment.duration}} Months</td>
+                    <th scope="row">Interest Rate</th>
+                    <td>{{investment.interestrate}}%</td>
+                    <th scope="row">Referral Code</th>
+                    <td>{{investment.code | uppercase}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Start Date</th>
+                    <td>{{investment.startdate  | date : 'MMM d, y' }}</td>
+                    <th scope="row">End Date</th>
+                    <td>{{investment.enddate | date : 'MMM d, y'}}</td>
+                    <th scope="row">First Month Interest</th>
+                    <td>{{investment.firstinterestamount | currency:'₦ '}}</td>
+                    <th scope="row">Subsequent Monthly Interest</th>
+                    <td>{{investment.lastinterestamount | currency:'₦ '}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
+        </nz-tab>
+        <nz-tab nzTitle="Transaction Schedule">
+          <ng-template nz-tab>
+            <div class="customtable_block">
+              <table class="customtable">
+                <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>Due Date</th>
+                    <th>Account</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let trans of investmentTransactions; let i = index">
+                    <td>{{i + 1}}</td>
+
+                    <td>{{trans.duedate  | date : 'MMM d, y' }}</td>
+                    <td>{{trans.interestamount | currency:'₦ '}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
+        </nz-tab>
+        <nz-tab nzTitle="Loan Disk Operations">
+          <ng-template nz-tab>
+            <div class="customtable_block">
+              <table class="customtable" *ngIf="investment.savings_id">
+                <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>Due Date</th>
+                    <th>Account</th>
+                    <!-- <th></th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let trans of investmentTransactions; let i = index">
+                    <td>{{i + 1}}</td>
+
+                    <td>{{trans.duedate  | date : 'MMM d, y' }}</td>
+                    <td>{{trans.interestamount | currency:'₦ '}}</td>
+                    <!-- <td> 
+                            <a (click)="transferout(trans);" class="button button--sm button--secondary"
+                            *ngIf="trans.transstatus == '0' ">Add Transfer Out</a>
+                        </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+  </div>
+
+  <div id="myModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Process Investment Documents</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="text--medium text--deep-black text--capital">Start date</label>
+            <input nzSize="large" name="startdate" [(ngModel)]="startdate" type="date" nz-input>
+          </div>
+          <div class="form-group">
+            <label class="text--medium text--deep-black text--capital">amount</label>
+            <input nzSize="large" name="amount" (input)="amount = formatTextToNumber(amount)" [(ngModel)]="amount"
+              type="number" nz-input>
+          </div>
+          <div class="form-group">
+            <label class="text--medium text--deep-black text--capital">duration</label>
+            <nz-select nzShowSearch name="duration" [(ngModel)]="duration" [nzSuffixIcon]="suffixDropDown">
+              <nz-option nzValue="6">6 months</nz-option>
+              <nz-option nzValue="12">12 months</nz-option>
+            </nz-select>
+          </div>
+          <div class="form-group">
+            <label class="text--medium text--deep-black text--capital">interest</label>
+            <input nzSize="large" (ngModelChange)="setInterest()" min="2" max="5" [(ngModel)]="interestrate"
+              type="number" nz-input>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="button button--secondary-outline"
+            data-dismiss="modal">Close</button>
+          <button type="button" class="button button--secondary" nz-popconfirm
+            nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="processInvestment()">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="myModalConfirm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="myModalConfirmLabel" aria-hidden="true" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="myModalConfirmLabel" class="modal-title">Confirm Payment</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="text--medium text--deep-black text--capital">Start date</label>
+                <input nzSize="large" name="startdate" [(ngModel)]="startdate" type="date" nz-input>
+              </div>
+              <div class="form-group">
+                <label class="text--medium text--deep-black text--capital">amount</label>
+                <input nzSize="large" name="amount" (input)="amount = formatTextToNumber(amount)" [(ngModel)]="amount"
+                  type="number" nz-input>
+              </div>
+              <div class="form-group">
+                <label class="text--medium text--deep-black text--capital">duration</label>
+                <nz-select nzShowSearch name="duration" [(ngModel)]="duration" [nzSuffixIcon]="suffixDropDown">
+                  <nz-option nzValue="6">6 months</nz-option>
+                  <nz-option nzValue="12">12 months</nz-option>
+                </nz-select>
+              </div>
+              <div class="form-group">
+                <label class="text--medium text--deep-black text--capital">interest</label>
+                <input nzSize="large" (ngModelChange)="setInterest()" min="2" max="5" [(ngModel)]="interestrate"
+                  type="number" nz-input>
+              </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="button button--secondary-outline"
+              data-dismiss="modal">Close</button>
+            <button type="button" class="button button--secondary" nz-popconfirm
+              nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="confirmPayment()">Confirm</button>
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="myModalComplete" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="myModalCompleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalCompleteLabel">Complete Investment Process</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="text--medium text--deep-black text--capital">borrower invite link</label>
+            <textarea nz-input class="text--regular-alt text--upper" name="link" [(ngModel)]="portalLink" [nzAutosize]="{ minRows: 2, maxRows: 3 }"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="button button--secondary-outline"
+            data-dismiss="modal">Close</button>
+            <button type="button" class="button button--secondary" nz-popconfirm
+              nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="completeInvestment()">Complete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="investmentUser">
+    <div id="myModalEdit" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="myModalEditLabel">
+        <div class="modal-dialog">
+    
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalEditLabel">Edit Application Form</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="text--medium text--deep-black text--capital">title</label>
+                    <nz-select nzShowSearch name="title" [(ngModel)]="investmentUser.title" [nzSuffixIcon]="suffixDropDown">
+                      <nz-option nzValue="Alhaja" nzLabel="Alhaja"></nz-option>
+                      <nz-option nzValue="Alhaji" nzLabel="Alhaji"></nz-option>
+                      <nz-option nzValue="Chief" nzLabel="Chief"></nz-option>
+                      <nz-option nzValue="Dr" nzLabel="Dr"></nz-option>
+                      <nz-option nzValue="Miss" nzLabel="Miss"></nz-option>
+                      <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                      <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                    </nz-select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="text--medium text--deep-black text--capital">gender</label>
+                    <nz-select nzShowSearch name="gender" [(ngModel)]="investmentUser.gender" [nzSuffixIcon]="suffixDropDown">
+                      <nz-option nzValue="Male" nzLabel="Male"></nz-option>
+                      <nz-option nzValue="Female" nzLabel="Female"></nz-option>
+                    </nz-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="text--medium text--deep-black text--capital">first name</label>
+                <input nzSize="large" name="firstname" [(ngModel)]="investmentUser.firstname" type="text" nz-input>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="text--medium text--deep-black text--capital">last name</label>
+                <input nzSize="large" name="lastname" [(ngModel)]="investmentUser.lastname" type="text" nz-input>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="text--medium text--deep-black text--capital">email address</label>
+                <input nzSize="large" name="email" [(ngModel)]="investmentUser.email" type="email" nz-input>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="text--medium text--deep-black text--capital">telephone</label>
+                <input nzSize="large" name="telephone" [(ngModel)]="investmentUser.telephone" type="tel" nz-input>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="text--medium text--deep-black text--capital">preferred bank name</label>
+                    <nz-select nzShowSearch name="bankcode" [(ngModel)]="investmentUser.bankcode" [nzSuffixIcon]="suffixDropDown">
+                      <nz-option *ngFor="let bank of banks" [nzValue]="bank.bankcode" [nzLabel]="bank.name"></nz-option>
+                    </nz-select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                      <label class="text--medium text--deep-black text--capital">preferred bank account</label>
+                      <input nzSize="large" name="accountnumber" [(ngModel)]="investmentUser.accountnumber" type="tel" nz-input>
+                  </div>
+                </div>
+              </div>
+    
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="button button--secondary-outline"
+            data-dismiss="modal">Close</button>
+            <button type="button" class="button button--secondary" nz-popconfirm
+              nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="editInvestor()">Edit Investor</button>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+  </ng-container>
+
+</ng-container>
+
+
+<ng-template #suffixDropDown>
+  <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
+</ng-template>

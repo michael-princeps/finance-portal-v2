@@ -1,0 +1,121 @@
+<div>
+  <h4 class="page_title text--capital">{{pageTitle}}</h4>
+  <div class="" *ngIf="investmentObject">
+    <div class="row">
+      <div class="col-3">
+        <div class="card rounded">
+          <div class="card-body">
+            <h6 class="text--medium text--primary text--bold">
+              {{this.investmentObject?.total_count}}
+            </h6>
+            <hr>
+            <p class="text--regular text--deep-black">
+              Total Application
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card rounded">
+          <div class="card-body">
+            <h6 class="text--medium text--primary text--bold">
+              {{this.investmentObject?.total_sum | currency:'₦'}}
+            </h6>
+            <hr>
+            <p class="text--regular text--deep-black">
+              Total Amount
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="action-row mt-3">
+      <div nz-row [nzGutter]="16">
+        <div nz-col nzXs="24" nzSm="24" nzMd="14" class="gutter-row">
+          <!-- <input nz-input placeholder="large size"  /> -->
+          <div nz-row [nzGutter]="16" nzAlign="bottom">
+            <div nz-col class="gutter-row" nzXs="12" nzLg="6">
+              <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
+                <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text" />
+              </nz-input-group>
+              <ng-template #suffixIconSearch>
+                <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="investmentsData">
+      <div class="mt-4">
+        <table class="customtable">
+          <thead>
+            <tr>
+                <th>
+                  &nbsp;
+                </th>
+              <th>
+                Options
+              </th>
+              <th>Start Date</th>
+              <th>Name</th>
+              <th>Amount</th>
+              <th *ngIf="status == 2">Account Number</th>
+              <th>Payment Ref</th>
+              <th>Referral Code</th>
+              <th>Duration</th>
+              <th>Investment Reference</th>
+              <th>Interest Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="investmentsData && investmentsData.length; else noInvestments">
+              <tr *ngFor="let savings of investmentsData; let index = index">
+                <td>{{index + 1}}</td>
+                <td>
+                  <button class="button button--sm button--secondary"
+                    [routerLink]="['/investments/view', savings.id]">View</button>
+                </td>
+                <td>{{savings.startdate   | date }}</td>
+                <td>{{savings.firstname  | titlecase }} {{savings.lastname   | titlecase}}</td>
+                <td>{{savings.amount | currency:'₦'}}</td>
+                <td *ngIf="status == 2">{{savings.savings_account_number}}</td>
+                <td>{{savings.paymentref}}</td>
+                <td>{{(savings.code? savings.code : 'None')  | uppercase}}</td>
+                <td>{{savings.duration}} months</td>
+                <td>{{savings.investment_reference ? savings.investment_reference : 'N/a'}}</td>
+                <td>{{savings.interestrate}}%</td>
+              </tr>
+            </ng-container>
+            <ng-template #noInvestments>
+              <tr>
+                <td [colSpan]="status == 2 ? '11' : '10'" class="text--center">
+                  No investments yet
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+      </div>
+      <div class="customtable_footer">
+        <p class="paginate_text text--ash">
+          Displaying&nbsp;<nz-input-number [(ngModel)]="pageSize" (ngModelChange)="changePage($event)" [nzMin]="1"
+            [nzMax]="investments?.total" [nzStep]="1"></nz-input-number>&nbsp;out of {{this.investments?.total}} results
+        </p>
+        <div class="paginate">
+          <span class="paginate_text">
+            {{this.investments?.from}} - {{this.investments?.to}}
+          </span>
+          <div class="button-group">
+            <button (click)="goPrevious()" class="button button_paginate_prev text--capital">
+              <img src="assets/images/chevron-left.svg" alt="Previous" srcset="">
+            </button>
+            <button (click)="goNext()" class="button button_paginate_next text--capital">
+              <img src="assets/images/chevron-right.svg" alt="Next" srcset="">
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

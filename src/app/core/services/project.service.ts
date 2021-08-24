@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin } from 'rxjs';
-// import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { environment } from 'src/environments/environment';
 
-// const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-// const EXCEL_EXTENSION = '.xlsx';
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
 
 @Injectable({
   providedIn: 'root'
@@ -25,17 +25,16 @@ export class ProjectService {
     return this.http.post(`${environment.api}finance/dashboard`, details);
   }
 
-  // excel
-  // public exportAsExcelFile(json: any[], excelFileName: string): void {
-  //   const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-  //   const workbook: XLSX.WorkBook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-  //   const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  //   this.saveAsExcelFile(excelBuffer, excelFileName);
-  // }
-  // private saveAsExcelFile(buffer: any, fileName: string): void {
-  //   const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
-  //   FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-  // }
+  public exportAsExcelFile(json: any[], excelFileName: string): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    const workbook: XLSX.WorkBook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
 
   // liquidation
   createLiquidationRequest(details) {
@@ -152,5 +151,54 @@ export class ProjectService {
 
   viewBatchRecords(data) {
     return this.http.post(`${environment.api}repayment/document/view`, data);
+  }
+
+  uploadCreditWalletRepayments(repayments) {
+    return this.http.post(`${environment.api}repayment/document/rsp/bulk/add`, repayments);
+  }
+
+  uploadNotFoundRepayments(repayments) {
+    return this.http.post(`${environment.api}repayment/document/notfound/bulk/add`, repayments);
+  }
+
+  changeBatchStatus(id) {
+    return this.http.post(`${environment.api}repayment/document/status/change`, id);
+  }
+
+  // investments
+  listInvestments(data) {
+    return this.http.post(`${environment.api}investment/list`, data);
+  }
+
+  cancelInvestment(id) {
+    return this.http.post(`${environment.api}investment/cancel`, id);
+  }
+
+  makeInvestmentReferral(id) {
+    return this.http.post(`${environment.api}investment/referral/payment/initiate`, id);
+  }
+
+  fetchOneInvestment(id) {
+    return this.http.post(`${environment.api}investment/one`, id);
+  }
+
+  processInvestment(data) {
+    return this.http.post(`${environment.api}investment/process-documents`, data);
+  }
+
+  confirmInvestment(data) {
+    return this.http.post(`${environment.api}investment/confirm/payment`, data);
+  }
+
+  completeInvestment(data) {
+    return this.http.post(`${environment.api}investment/complete`, data);
+  }
+
+  editInvestment(investment) {
+    return this.http.post(`${environment.api}investment/edit`, investment);
+  }
+
+  processRollover(investment) {
+    return this.http.post(`${environment.api}investment/rollover`, investment);
   }
 }

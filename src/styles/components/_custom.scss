@@ -1,6 +1,10 @@
 @import '../abstract/variables';
 // @import "~ng-zorro-antd/select/style/index.min.css";
 
+.cdk-overlay-container {
+  z-index: 1100;
+}
+
 nz-select {
     width: 100%;
   

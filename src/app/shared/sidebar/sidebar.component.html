@@ -103,8 +103,8 @@
                     </div>
                 </div>
             </div>
-             <!-- <div class="has-child">
-                <a class="sidebar_menu_item" [ngClass]="{'activemenu': isActive('investment')}" >
+             <div class="has-child">
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': investmentsChild1Active.isActive || investmentsChild2Active.isActive || investmentsChild3Active.isActive || investmentsChild4Active.isActive || investmentsChild5Active.isActive || investmentsChild6Active.isActive || investmentsChild7Active.isActive || isActive('investments')}" >
                     <img src="assets/images/repayment-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
                     Investments
                 </a>
@@ -116,6 +116,18 @@
                         </a>
                     </header>
                     <div class="submenu_menu">
+                        <a class="submenu_menu_item" #investmentsChild1Active="routerLinkActive" [routerLink]="['/investments/0']" routerLinkActive="activemenu" >
+                            New
+                        </a>
+                        <a class="submenu_menu_item" #investmentsChild2Active="routerLinkActive" [routerLink]="['/investments/1']" routerLinkActive="activemenu" >
+                            Processing
+                        </a>
+                        <a class="submenu_menu_item" #investmentsChild3Active="routerLinkActive" [routerLink]="['/investments/2']" routerLinkActive="activemenu" >
+                            Completed
+                        </a>
+                        <a class="submenu_menu_item" #investmentsChild4Active="routerLinkActive" [routerLink]="['/investments/3']" routerLinkActive="activemenu" >
+                            Canceled
+                        </a>
                         <a class="submenu_menu_item has-collapse"
                         [ngClass]="{'activemenu': investmentsChild5Active.isActive ||  investmentsChild6Active.isActive}">
                        maturity management
@@ -123,19 +135,23 @@
                       </a>
                       <div class="submenu_menu collapse">
                         <a class="submenu_menu_item" #investmentsChild5Active="routerLinkActive"
-                          [routerLink]="['/investment/maturity/upload']" routerLinkActive="activemenu">
+                          [routerLink]="['/investments/maturity/upload']" routerLinkActive="activemenu">
                           upload data
                         </a>
                         <a class="submenu_menu_item" #investmentsChild6Active="routerLinkActive"
-                          [routerLink]="['/investment/maturity/email']" routerLinkActive="activemenu">
+                          [routerLink]="['/investments/maturity/email']" routerLinkActive="activemenu">
                           send email
                         </a>
                       </div>
+
+                      <a class="submenu_menu_item" #investmentsChild7Active="routerLinkActive" [routerLink]="['/investments/rollover']" routerLinkActive="activemenu" >
+                        Rollover
+                    </a>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <div class="has-child">
-                <a class="sidebar_menu_item" [ngClass]="{'activemenu': repaymentsChild1Active.isActive || repaymentsChild2Active.isActive || repaymentsChild3Active.isActive || isActive('repayments')}" >
+                <a class="sidebar_menu_item" [ngClass]="{'activemenu': repaymentsChild1Active.isActive || repaymentsChild2Active.isActive || repaymentsChild3Active.isActive || repaymentsChild4Active.isActive || repaymentsChild5Active.isActive || isActive('repayments')}" >
                     <img src="assets/images/refunds-icon.svg" width="24" height="24" class="sidebar_menu_icon" alt="" srcset="">
                     Repayments
                 </a>
@@ -150,13 +166,16 @@
                         <a class="submenu_menu_item" #repaymentsChild1Active="routerLinkActive" [routerLink]="['/repayments/upload']" routerLinkActive="activemenu" >
                             Upload repayment
                         </a>
-                        <a class="submenu_menu_item" #repaymentsChild2Active="routerLinkActive" [routerLink]="['/repayments/queue']" routerLinkActive="activemenu" >
+                        <a class="submenu_menu_item" #repaymentsChild2Active="routerLinkActive" [routerLink]="['/repayments/uploads']" routerLinkActive="activemenu" >
+                            repayment uploads
+                        </a>
+                        <a class="submenu_menu_item" #repaymentsChild3Active="routerLinkActive" [routerLink]="['/repayments/queue']" routerLinkActive="activemenu" >
                             repayments queue
                         </a>
-                        <a class="submenu_menu_item" #repaymentsChild2Active="routerLinkActive" [routerLink]="['/repayments/processed']" routerLinkActive="activemenu" >
+                        <a class="submenu_menu_item" #repaymentsChild4Active="routerLinkActive" [routerLink]="['/repayments/processed']" routerLinkActive="activemenu" >
                             processed repayments
                         </a>
-                        <a class="submenu_menu_item" #repaymentsChild3Active="routerLinkActive" [routerLink]="['/repayments/report']" routerLinkActive="activemenu" >
+                        <a class="submenu_menu_item" #repaymentsChild5Active="routerLinkActive" [routerLink]="['/repayments/report']" routerLinkActive="activemenu" >
                             repayment report
                         </a>
                     </div>

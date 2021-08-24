@@ -92,7 +92,7 @@ const routes: Routes = [
 
       // investements
       {
-        path: 'investment',
+        path: 'investments',
         children: [
           {
             path: 'maturity/upload',
@@ -101,6 +101,18 @@ const routes: Routes = [
           {
             path: 'maturity/email',
             loadChildren: () => import('./investments/send-maturity-email/send-maturity-email.module').then(m => m.SendMaturityEmailModule)
+          },
+          {
+            path: 'rollover',
+            loadChildren: () => import('./investments/rollover-investment/rollover-investment.module').then(m => m.RolloverInvestmentModule)
+          },
+          {
+            path: 'view/:id',
+            loadChildren: () => import('./investments/single-investment/single-investment.module').then(m => m.SingleInvestmentModule)
+          },
+          {
+            path: ':id',
+            loadChildren: () => import('./investments/list-investments/list-investments.module').then(m => m.ListInvestmentsModule)
           }
         ]
       },
@@ -129,6 +141,10 @@ const routes: Routes = [
             loadChildren: () => import('./repayments/upload-repayments/upload-repayments.module').then(m => m.UploadRepaymentsModule)
           },
           {
+            path: 'uploads',
+            loadChildren: () => import('./repayments/list-repayment-uploads/list-repayment-uploads.module').then(m => m.ListRepaymentUploadsModule)
+          },
+          {
             path: 'queue',
             // tslint:disable-next-line: max-line-length
             loadChildren: () => import('./repayments/list-repayments-queue/list-repayments-queue.module').then(m => m.ListRepaymentsQueueModule)
@@ -148,7 +164,7 @@ const routes: Routes = [
           },
           {
             path: 'view/:id',
-            loadChildren: () => import('./repayments/upload-repayments/upload-repayments.module').then(m => m.UploadRepaymentsModule)
+            loadChildren: () => import('./repayments/single-repayment/single-repayment.module').then(m => m.SingleRepaymentModule)
           }
         ]
       }

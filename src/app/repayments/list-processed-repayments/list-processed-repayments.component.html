@@ -31,14 +31,12 @@
                       <img src="assets/images/search.svg" width="20" height="20" alt="" srcset="">
                     </ng-template>
                   </div>
-                  <div nz-col class="gutter-row">
-                    <button class="button button--secondary text--capital" (click)="listRepayments()">
-                        Fetch Results
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
+            <button class="button button--secondary text--capital mt-4" (click)="listRepayments()">
+              Fetch Results
+          </button>
           </div>
           <ng-container *ngIf="repaymentsData">
             <div class="mt-5">
