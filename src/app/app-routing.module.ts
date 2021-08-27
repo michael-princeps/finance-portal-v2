@@ -163,7 +163,7 @@ const routes: Routes = [
             loadChildren: () => import('./repayments/repayments-report/repayments-report.module').then(m => m.RepaymentsReportModule)
           },
           {
-            path: 'view/:id',
+            path: 'view/:name',
             loadChildren: () => import('./repayments/single-repayment/single-repayment.module').then(m => m.SingleRepaymentModule)
           }
         ]

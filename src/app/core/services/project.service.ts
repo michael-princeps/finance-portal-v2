@@ -149,8 +149,16 @@ export class ProjectService {
     return this.http.post(`${environment.api}repayment/document/list`, data);
   }
 
+  // viewBatchRecords(data) {
+  //   return this.http.post(`${environment.api}repayment/document/view`, data);
+  // }
+
   viewBatchRecords(data) {
-    return this.http.post(`${environment.api}repayment/document/view`, data);
+    return this.http.post(`${environment.api}repayment/document/list/one`, data);
+  }
+
+  changeRepaymentStatus(data) {
+    return this.http.post(`${environment.api}repayment/document/process-status/change`, data);
   }
 
   uploadCreditWalletRepayments(repayments) {

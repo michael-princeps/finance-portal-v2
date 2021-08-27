@@ -14,6 +14,7 @@ export class ListRepaymentsQueueComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line: variable-name
   search_text = '';
   pageSize = 50;
+  type: any;
   private searchText$ = new Subject<string>();
   private pageSize$ = new Subject<number>();
   repayments: any;
@@ -23,7 +24,7 @@ export class ListRepaymentsQueueComponent implements OnInit, AfterViewInit {
    }
 
   ngOnInit(): void {
-    this.listRepayments();
+    // this.listRepayments();
   }
 
   ngAfterViewInit() {
@@ -73,17 +74,21 @@ export class ListRepaymentsQueueComponent implements OnInit, AfterViewInit {
   }
 
   listRepayments() {
-    const params = {
-      type: '1',
-      search_text: this.search_text,
-      page_size: this.pageSize
-    };
-    this.service.listRepayments(params).subscribe((data: any) => {
-      if (data.status === 'success') {
-        this.repayments = data.queue;
-        this.repaymentsData = data.queue.data;
-      }
-    });
+    if (!this.type) {
+      this.notification.info('Incomplete!', 'Please select type')
+    } else {
+      const params = {
+        type: this.type,
+        search_text: this.search_text,
+        page_size: this.pageSize
+      };
+      this.service.listRepayments(params).subscribe((data: any) => {
+        if (data.status === 'success') {
+          this.repayments = data.queue;
+          this.repaymentsData = data.queue.data;
+        }
+      });
+    }
   }
 
   goNext() {
@@ -92,7 +97,7 @@ export class ListRepaymentsQueueComponent implements OnInit, AfterViewInit {
       this.notification.info('Hey!', 'You are on the last page already');
     } else {
       const json = {
-        type: '1',
+        type: this.type,
         search_text: this.search_text,
         page_size: this.pageSize
       };
@@ -110,7 +115,7 @@ export class ListRepaymentsQueueComponent implements OnInit, AfterViewInit {
       this.notification.info('Hey!', 'You are on the first page already');
     } else {
       const json = {
-        type: '1',
+        type: this.type,
         search_text: this.search_text,
         page_size: this.pageSize
       };
@@ -121,5 +126,9 @@ export class ListRepaymentsQueueComponent implements OnInit, AfterViewInit {
         }
       });
     }
+  }
+
+  resetTable() {
+    this.repaymentsData = null;
   }
 }

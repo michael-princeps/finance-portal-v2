@@ -6,14 +6,14 @@
         <div nz-col nzXs="24" nzSm="24" nzMd="14" class="gutter-row">
           <!-- <input nz-input placeholder="large size"  /> -->
           <div nz-row [nzGutter]="16" nzAlign="bottom">
-            <div nz-col nzXs="12" nzLg="6">
+            <div nz-col nzXs="8" nzLg="6">
               <nz-select [(ngModel)]="type" nzSize="large" nzPlaceHolder="Repayemnt Type"
                 [nzSuffixIcon]="suffixBulkSelect">
                 <nz-option nzValue="1" nzLabel="RSP"></nz-option>
                 <nz-option nzValue="0" nzLabel="IPPIS"></nz-option>
               </nz-select>
             </div>
-            <div nz-col nzXs="12" nzLg="6">
+            <div nz-col nzXs="8" nzLg="6">
               <nz-select [(ngModel)]="status" nzSize="large" nzPlaceHolder="Status" [nzSuffixIcon]="suffixBulkSelect">
                 <nz-option nzValue="0" nzLabel="New"></nz-option>
                 <nz-option nzValue="1" nzLabel="Processed"></nz-option>
@@ -22,7 +22,7 @@
                 <img src="assets/images/chevron-down.svg" width="20" height="20" alt="" srcset="">
               </ng-template>
             </div>
-            <div nz-col class="gutter-row" nzXs="12" nzLg="6">
+            <div nz-col class="gutter-row" nzXs="8" nzLg="6">
               <nz-input-group nzSize="large" [nzPrefix]="suffixIconSearch">
                 <input type="text" nz-input placeholder="Search" [(ngModel)]="search_text" />
               </nz-input-group>
@@ -55,8 +55,7 @@
             <ng-container *ngIf="repaymentsData && repaymentsData.length; else norepayments">
               <tr *ngFor="let loan of repaymentsData; let index = index">
                 <td>
-                  <a [routerLink]="['/repayments/view', loan.id]" [queryParams]="{status: loan.status}"
-                    class="button button--secondary button--sm text--capital">
+                  <a [routerLink]="['/repayments/view', loan.name]" class="button button--secondary button--sm text--capital">
                     view
                   </a>
                 </td>

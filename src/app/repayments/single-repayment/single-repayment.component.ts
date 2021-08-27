@@ -11,7 +11,7 @@ import { ProjectService } from 'src/app/core/services/project.service';
 })
 export class SingleRepaymentComponent implements OnInit {
   creditWallet: any[] = [];
-  batchID: any;
+  batchName: any;
   allBatchData: any;
   existingTransactionReference: any[] = [];
   creditAlert: any[] = [];
@@ -21,35 +21,64 @@ export class SingleRepaymentComponent implements OnInit {
   totalNotFoundAmt: any;
   totalExistingTransactionAmt: any;
   statusId: any;
+  // tslint:disable-next-line: variable-name
+  page_size = 10;
+  // tslint:disable-next-line: variable-name
+  search_text = '';
+  ippisRepayments: any[] = [];
+  totalIppisRepaymentsAmt: any;
+  existingIPPIS: any[] = [];
+  totalExistingIPPISAmt: any;
+  documentInfo: any;
+  batchInfo: any;
+  // tslint:disable-next-line: max-line-length
   constructor(private notification: NzNotificationService, private service: ProjectService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.activatedRoute.url.pipe(withLatestFrom(this.activatedRoute.params, this.activatedRoute.queryParams)).subscribe((param: Params) => {
-      this.batchID = param[1].id;
-      this.statusId = param[2].status;
+    // this.activatedRoute.url.pipe(withLatestFrom(this.activatedRoute.params, this.activatedRoute.queryParams)).subscribe((param: Params) => {
+    //   this.batchName = param[1].name;
+    //   this.viewBatchRecords();
+    // });
+    this.activatedRoute.params.subscribe((param: Params) => {
+      this.batchName = param.name;
       this.viewBatchRecords();
     });
-    // this.activatedRoute.params.subscribe((param: Params) => {
-    //   this.batchID = param.id;
-    //   console.log()
-    // });
   }
 
   viewBatchRecords() {
     const batchData = {
-      id: this.batchID
+      batch_name: this.batchName
     };
     this.service.viewBatchRecords(batchData).subscribe((data: any) => {
       if (data.status === 'success') {
-        this.allBatchData = data;
-        this.creditWallet = data.creditwallet;
+        this.batchInfo = data;
+        this.documentInfo = data.document_info;
+        this.allBatchData = data.data;
+        this.creditWallet =  (this.allBatchData.data as any[]).filter((item) => item.process_type === '1');
         this.totalCreditWalletAmt = this.creditWallet.reduce((acc, { amount }) => acc + parseFloat(amount), 0);
-        this.existingTransactionReference = data.existingtransactionreference;
+        this.existingTransactionReference =  (this.allBatchData.data as any[]).filter((item) => item.process_type === '2');
         this.totalExistingTransactionAmt = this.existingTransactionReference.reduce((acc, { amount }) => acc + parseFloat(amount), 0);
-        this.creditAlert = data.creditalert;
+        this.creditAlert =  (this.allBatchData.data as any[]).filter((item) => item.process_type === '3');
         this.totalCreditAlertAmt = this.creditAlert.reduce((acc, { amount }) => acc + parseFloat(amount), 0);
-        this.notFound = data.notfound;
+        this.notFound =  (this.allBatchData.data as any[]).filter((item) => item.process_type === '4');
         this.totalNotFoundAmt = this.notFound.reduce((acc, { amount }) => acc + parseFloat(amount), 0);
+        this.ippisRepayments =  (this.allBatchData.data as any[]).filter((item) => item.process_type === '5');
+        this.totalIppisRepaymentsAmt = this.ippisRepayments.reduce((acc, { amount }) => acc + parseFloat(amount), 0);
+        this.existingIPPIS =  (this.allBatchData.data as any[]).filter((item) => item.process_type === '6');
+        this.totalExistingIPPISAmt = this.ippisRepayments.reduce((acc, { amount }) => acc + parseFloat(amount), 0);
+      }
+    });
+  }
+
+  changeRepaymentStatus() {
+    const repaymentObj = {
+      process_status: '2',
+      name: this.batchName
+    };
+    this.service.changeRepaymentStatus(repaymentObj).subscribe((data: any) => {
+      if (data.status === 'success') {
+        this.notification.success('Successful!', data.message);
+        this.creditWallet = [];
       }
     });
   }
@@ -73,24 +102,33 @@ export class SingleRepaymentComponent implements OnInit {
   }
 
   export(data: Array<any>, title: string) {
-    const reportdata = [];
-    for (let index = 0; index < data.length; ++index) {
-      const json = {
+    // const reportdata = [];
+    // for (let index = 0; index < data.length; ++index) {
+    //   const json = {
+    //     'S/No': index + 1,
+    //     'Mandate Reference': data[index].mandatereference,
+    //     Amount: data[index].amount,
+    //     'Payment Date': data[index].paymentdate,
+    //     'Transaction Reference': data[index].transactionreference,
+    //   };
+    //   reportdata[index] = json;
+    // }
+    const newData = data.map((item, index) => {
+      return  {
         'S/No': index + 1,
-        'Mandate Reference': data[index].mandatereference,
-        Amount: data[index].amount,
-        'Payment Date': data[index].paymentdate,
-        'Transaction Reference': data[index].transactionreference,
+        'Mandate Reference': item.mandatereference,
+        Amount: item.amount,
+        'Payment Date': item.paymentdate,
+        'Transaction Reference': item.transactionreference,
       };
-      reportdata[index] = json;
-    }
+    });
 
-    console.log(reportdata);
-    this.service.exportAsExcelFile(reportdata, title);
+    console.table(newData);
+    this.service.exportAsExcelFile(newData, title);
   }
 
   changeBatchStatus() {
-    this.service.changeBatchStatus({ id: this.batchID }).subscribe((data: any) => {
+    this.service.changeBatchStatus({ id: 2 }).subscribe((data: any) => {
       if (data.status === 'success') {
         this.notification.success('Successful!', data.message);
         this.router.navigate([], { relativeTo: this.activatedRoute });

@@ -1,7 +1,7 @@
 <div>
     <h4 class="page_title text--capital">view repayment</h4>
-    <div>
-        <nz-tabset [nzTabBarExtraContent]="statusId == '0' ? extraTemplate : null">
+    <div *ngIf="batchInfo">
+        <nz-tabset [nzTabBarExtraContent]="documentInfo.process_status == '1' ? extraTemplate : null">
             <nz-tab [nzTitle]="titleTemplate">
                 <ng-template #titleTemplate>
                 <span class="text--capital">credit wallet</span>
@@ -35,7 +35,7 @@
                   </div>
                   <ng-container *ngIf="creditWallet.length">
                     <div class="mb-2" *ngIf="creditWallet.length">
-                      <button class="button button--sm button--primary text--white mr-2" nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="uploadCreditWalletRepayments()">Upload</button>
+                      <!-- <button class="button button--sm button--primary text--white mr-2" nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="uploadCreditWalletRepayments()">Upload</button> -->
                       <button class="button button--sm button--primary-outline" (click)="export(creditWallet, 'Credit Wallet Repayment')">
                         Export
                       </button>
@@ -257,7 +257,7 @@
             </div>
             <ng-container *ngIf="notFound.length">
               <div class="mb-2" *ngIf="notFound.length">
-                <button class="button button--sm button--primary text--white mr-2" nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="uploadNotFoundRepayments()">Upload</button>
+                <!-- <button class="button button--sm button--primary text--white mr-2" nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="uploadNotFoundRepayments()">Upload</button> -->
                 <button class="button button--sm button--primary-outline" (click)="export(notFound, 'Not Found Repayment')">
                   Export
                 </button>
@@ -300,9 +300,152 @@
             </div>
         </ng-template>
       </nz-tab>
+      <nz-tab [nzTitle]="titleTemplate5">
+        <ng-template #titleTemplate5>
+        <span class="text--capital">iPPIS</span>
+        {{ippisRepayments.length}}
+        </ng-template>
+      <ng-template nz-tab>
+        <div class="row my-2">
+            <div class="col-2">
+              <div class="card rounded">
+                <div class="card-body">
+                  <div>
+                    <span class="text--bold d-block">{{ippisRepayments.length}}</span>
+                    <hr>
+                    <span class="d-block">Total Count</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="card rounded">
+                <div class="card-body">
+                  <div>
+                    <span
+                      class="text--bold d-block">{{(totalIppisRepaymentsAmt? totalIppisRepaymentsAmt: '0') | currency:'₦'}}</span>
+                    <hr>
+                    <span class="d-block">Total Amount</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="ippisRepayments.length">
+            <div class="mb-2" *ngIf="ippisRepayments.length">
+              <!-- <button class="button button--sm button--primary text--white mr-2" nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="uploadNotFoundRepayments()">Upload</button> -->
+              <button class="button button--sm button--primary-outline" (click)="export(ippisRepayments, 'IPPIS Repayment')">
+                Export
+              </button>
+            </div>
+          </ng-container>
+          <div class="customtable_block">
+            <table class="customtable">
+              <thead>
+                <tr>
+                  <th>
+                    &nbsp;
+                  </th>
+                  <th>IPPIS NUMBER</th>
+                  <th>AMOUNT</th>
+                  <th>PAYMENT DATE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="ippisRepayments.length; else noippisRepayments">
+                    <tr *ngFor="let loan of ippisRepayments; let i = index ">
+                      <td>{{i + 1}}</td>
+                      <td>{{loan.mandatereference}}</td>
+                      <td>{{loan.amount | currency:'₦'}}</td>
+                      <td>{{loan.paymentdate ? loan.paymentdate : 'N/A'}}</td>
+                      </tr>
+                </ng-container>
+                <ng-template #noippisRepayments>
+                  <tr>
+                    <td colspan="4" class="text--center">
+                      No repayments yet
+                    </td>
+                  </tr>
+                </ng-template>
+              </tbody>
+            </table>
+          </div>
+      </ng-template>
+    </nz-tab>
+    <nz-tab [nzTitle]="titleTemplate6">
+      <ng-template #titleTemplate6>
+      <span class="text--capital">existing transactions (IPPIS)</span>
+      {{existingIPPIS.length}}
+      </ng-template>
+    <ng-template nz-tab>
+      <div class="row my-2">
+          <div class="col-2">
+            <div class="card rounded">
+              <div class="card-body">
+                <div>
+                  <span class="text--bold d-block">{{existingIPPIS.length}}</span>
+                  <hr>
+                  <span class="d-block">Total Count</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="card rounded">
+              <div class="card-body">
+                <div>
+                  <span
+                    class="text--bold d-block">{{(totalExistingIPPISAmt? totalExistingIPPISAmt: '0') | currency:'₦'}}</span>
+                  <hr>
+                  <span class="d-block">Total Amount</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="existingIPPIS.length">
+          <div class="mb-2" *ngIf="existingIPPIS.length">
+            <button class="button button--sm button--primary-outline" (click)="export(existingIPPIS, 'IPPIS Repayment')">
+              Export
+            </button>
+          </div>
+        </ng-container>
+        <div class="customtable_block">
+          <table class="customtable">
+            <thead>
+              <tr>
+                <th>
+                  &nbsp;
+                </th>
+                <th>IPPIS</th>
+                <th>AMOUNT</th>
+                <th>PAYMENT DATE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngIf="existingIPPIS.length; else noexistingIPPIS">
+                  <tr *ngFor="let loan of existingIPPIS; let i = index ">
+                      <td>{{i + 1}}</td>
+                      <td>{{loan.mandatereference}}</td>
+                      <td>{{loan.amount | currency:'₦'}}</td>
+                      <td>{{loan.paymentdate ? loan.paymentdate : 'N/A'}}</td>
+                    </tr>
+              </ng-container>
+              <ng-template #noexistingIPPIS>
+                <tr>
+                  <td colspan="4" class="text--center">
+                    No repayments yet
+                  </td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+    </ng-template>
+  </nz-tab>
           </nz-tabset>
-          <ng-template #extraTemplate>
-            <button nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="changeBatchStatus()" class="button button--primary text--white">Complete</button>
-          </ng-template>
     </div>
 </div>
+<ng-template #extraTemplate>
+  <button nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="changeRepaymentStatus()" class="button button--primary text--white">Upload to queue</button>
+</ng-template>
